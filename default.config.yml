@@ -1,0 +1,129 @@
+---
+configure_terminal: yes
+configure_osx: yes
+configure_dotfiles: yes
+
+dotfiles_repo: https://github.com/razor54/dotfiles.git
+dotfiles_repo_accept_hostkey: yes
+dotfiles_repo_local_destination: ~/dotfiles
+dotfiles_files:
+  - .aliases
+  - .zshrc
+  - .gitconfig
+  - .gitignore_global
+  - .vimrc
+  - .vim
+  - .osx
+  - .functions
+
+homebrew_installed_packages:
+  # Dev
+  # *** Java ***
+  - jenv # Manage your Java environment
+  - maven # Java-based project management
+  # *** GO lang ***
+  - go
+  # *** Python ***
+  - python
+  - python3
+  - poetry # Python package management tool
+  # *** Javascript ***
+  - volta # Manage multiple Node.js versions (replace nvm)
+  - node # Node JS
+  # Shell Utilities
+  - mas # Mac App Store command-line interface
+  - git
+  - httpie # User-friendly cURL replacement (command-line HTTP client)
+  - jq # Lightweight and flexible command-line JSON processor
+  - postgresql@14 # Command-line interface for PostgreSQL
+  - coreutils # GNU File, Shell, and Text utilities
+  - tree # Display directories as trees
+  - csshx # Cluster ssh tool for Terminal.app
+  - fzf # Command-line fuzzy finder written in Go
+  - whatmask # Network settings helper
+  - wget # Internet file retriever
+  - nmap # Port scanning utility
+  - ssh-copy-id # Add a public key to a remote machine's authorized_keys file
+  - openssl # OpenSSL GIO module for glib
+  - pandoc # Swiss-army knife of markup format conversion
+  - telnet # User interface to the TELNET protocol
+  - sshuttle # Proxy server that works as a poor man's VPN
+  - tldr # Simplified and community-driven man pages
+  - tmux # Terminal multiplexer
+  - bat # Clone of cat(1) with syntax highlighting and Git integration
+  - awscli # AWS CLI
+  - ripgrep # Search tool like grep but much faster
+  - helm
+  - minikube # Run a Kubernetes cluster locally
+  - terraform
+  - terraform-docs
+  - terraformer
+  - zsh
+
+homebrew_taps:
+  - homebrew/core
+  - hashicorp/tap
+  - homebrew/cask-versions
+
+homebrew_cask_appdir: /Applications
+homebrew_cask_apps:
+  # - kite
+  - slack # Team communication and collaboration software
+  - obsidian # Knowledge base that works on top of a local folder of plain text Markdown files
+  - coconutbattery # Tool to show live information about the batteries in various devices
+  - monitorcontrol # Tool to control external monitor brightness & volume
+  - raindropio # All-in-one bookmark manager
+  # Browsers
+  - brave-browser
+  - google-chrome
+  - firefox
+  # Utilities
+  - vlc # VLC media player
+  - kap # Open-source screen recorder built with web technology
+  - spotify
+  - cyberduck # browser FTP, SFTP, s3,...
+  - the-unarchiver # Unpacks archive files
+  - shottr # Screenshot measurement and annotation tool
+  # DevOps tools
+  - docker
+  #- vagrant # Not working on Mac M series
+  #- virtualbox # Not working on Mac M series
+  # - hashicorp/tap/terraform
+  - lens # Kubernetes IDE
+  # Dev environment
+  - phantomjs
+  - temurin11 # Java JDK from the Eclipse Foundation (Adoptium)
+  - postman # Collaboration platform for API development
+  - insomnia # postman alternative
+  - visual-studio-code
+  - open-in-code # Finder toolbar app to open current folder in Visual Studio Code
+  - jetbrains-toolbox
+  # Databases
+  - postico # GUI client for PostgreSQL databases
+  - tableplus # friendly GUI tool for relational databases
+  # Quick look plugins
+  - qlcolorcode # Quick Look plug-in that renders source code with syntax highlighting
+  - qlstephen # A QuickLook plugin that lets you view plain text files without a file extension
+  - qlmarkdown # QuickLook generator for Markdown files
+  - quicklook-json # QuickLook plugin for JSON files
+  - quicklook-csv # QuickLook plugin for CSV files
+  - go2shell # Opens a terminal window to the current directory in Finder
+  # CLI
+  #- romkatv/powerlevel10k/powerlevel10k
+  - redisinsight
+  - bleunlock
+  - iterm2
+
+# See `geerlingguy.mas` role documentation for usage instructions.
+mas_installed_app_ids:
+  - 937984704 # Amphetamine
+  - 425955336 # Skitch
+  - 472226235 # LanScan
+  - 973213640 # MSG Viewer for Outlook
+  - 409201541 # Pages
+  - 409183694 # Keynote
+  - 409203825 # Numbers
+  - 1295203466 # Microsoft Remote Desktop
+  - 513610341 # com.peacockmedia.integrity
+  - 1333542190 # 1password
+
