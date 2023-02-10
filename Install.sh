@@ -51,3 +51,13 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k $ZSH_CUSTOM/themes/
 git clone https://github.com/flazz/vim-colorschemes
 mv vim-colorschemes/colors ~/maximum-awesome
 rm -rf vim-colorschemes
+
+# install zsh syntax highlight
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Install auto suggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# Install nerdtree
+git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/vendor/start/nerdtree
+vim -u NONE -c "helptags ~/.vim/pack/vendor/start/nerdtree/doc" -c q

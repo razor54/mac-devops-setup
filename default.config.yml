@@ -1,4 +1,5 @@
 ---
+
 configure_terminal: yes
 configure_osx: yes
 configure_dotfiles: yes
@@ -31,7 +32,6 @@ homebrew_installed_packages:
   - volta # Manage multiple Node.js versions (replace nvm)
   - node # Node JS
   # Shell Utilities
-  - mas # Mac App Store command-line interface
   - git
   - httpie # User-friendly cURL replacement (command-line HTTP client)
   - jq # Lightweight and flexible command-line JSON processor
@@ -59,6 +59,16 @@ homebrew_installed_packages:
   - terraform-docs
   - terraformer
   - zsh
+  - bear
+  - ykman
+  - coreutils
+  - findutils
+  - gnu-indent
+  - gnu-sed
+  - gnutls
+  - grep
+  - gnu-tar
+  - gawk
 
 homebrew_taps:
   - homebrew/core
@@ -113,17 +123,11 @@ homebrew_cask_apps:
   - redisinsight
   - bleunlock
   - iterm2
-
-# See `geerlingguy.mas` role documentation for usage instructions.
-mas_installed_app_ids:
-  - 937984704 # Amphetamine
-  - 425955336 # Skitch
-  - 472226235 # LanScan
-  - 973213640 # MSG Viewer for Outlook
-  - 409201541 # Pages
-  - 409183694 # Keynote
-  - 409203825 # Numbers
-  - 1295203466 # Microsoft Remote Desktop
-  - 513610341 # com.peacockmedia.integrity
-  - 1333542190 # 1password
+  - lulu
+  - flux
+  - viscosity
+  - zoom
+  - microsoft-office
+  - fork
+  - disk-inventory-x
 
