@@ -61,7 +61,6 @@ homebrew_installed_packages:
   - zsh
   - bear
   - ykman
-  - coreutils
   - findutils
   - gnu-indent
   - gnu-sed
@@ -69,6 +68,14 @@ homebrew_installed_packages:
   - grep
   - gnu-tar
   - gawk
+  - prettyping
+  - gh
+  - delve
+  - rabbitmq
+  - git-delta
+  - podman
+  - gnupg
+  - ncc
 
 homebrew_taps:
   - homebrew/core
@@ -89,7 +96,6 @@ homebrew_cask_apps:
   - firefox
   # Utilities
   - vlc # VLC media player
-  - kap # Open-source screen recorder built with web technology
   - spotify
   - cyberduck # browser FTP, SFTP, s3,...
   - the-unarchiver # Unpacks archive files
@@ -106,7 +112,6 @@ homebrew_cask_apps:
   - postman # Collaboration platform for API development
   - insomnia # postman alternative
   - visual-studio-code
-  - open-in-code # Finder toolbar app to open current folder in Visual Studio Code
   - jetbrains-toolbox
   # Databases
   - postico # GUI client for PostgreSQL databases
@@ -117,17 +122,18 @@ homebrew_cask_apps:
   - qlmarkdown # QuickLook generator for Markdown files
   - quicklook-json # QuickLook plugin for JSON files
   - quicklook-csv # QuickLook plugin for CSV files
-  - go2shell # Opens a terminal window to the current directory in Finder
   # CLI
   #- romkatv/powerlevel10k/powerlevel10k
   - redisinsight
   - bleunlock
   - iterm2
-  - lulu
+  - lulu # Firewall
   - flux
   - viscosity
   - zoom
   - microsoft-office
-  - fork
+  - fork # git GUI
   - disk-inventory-x
-
+  - microsoft-teams
+  - yamllint
+  - podman-desktop
