@@ -76,11 +76,14 @@ homebrew_installed_packages:
   - podman
   - gnupg
   - ncc
+  - gum
+  - actionlint
 
 homebrew_taps:
   - homebrew/core
   - hashicorp/tap
   - homebrew/cask-versions
+  - weaveworks/tap
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
@@ -137,3 +140,4 @@ homebrew_cask_apps:
   - microsoft-teams
   - yamllint
   - podman-desktop
+  - eksctl
