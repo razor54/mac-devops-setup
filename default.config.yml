@@ -78,6 +78,8 @@ homebrew_installed_packages:
   - ncc
   - gum
   - actionlint
+  - aws-cdk
+  - powerlevel10k
 
 homebrew_taps:
   - homebrew/core
@@ -141,3 +143,5 @@ homebrew_cask_apps:
   - yamllint
   - podman-desktop
   - eksctl
+  - arc
+  - orbstack
