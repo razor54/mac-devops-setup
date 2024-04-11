@@ -80,11 +80,13 @@ homebrew_installed_packages:
   - powerlevel10k
   - yamllint
   - eksctl
+  - nvm
 
 homebrew_taps:
   - hashicorp/tap
   - homebrew/cask-versions
   - weaveworks/tap
+  - homebrew/cask-fonts
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
@@ -128,7 +130,7 @@ homebrew_cask_apps:
   - quicklook-csv # QuickLook plugin for CSV files
   # CLI
   #- romkatv/powerlevel10k/powerlevel10k
-  - redisinsight
+  #- redisinsight
   - bleunlock
   - iterm2
   - lulu # Firewall
@@ -142,3 +144,4 @@ homebrew_cask_apps:
   - podman-desktop
   - arc
   - orbstack
+  - discord
