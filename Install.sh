@@ -21,7 +21,8 @@ export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 # sudo python get-pip.py
 
 echo "# Step 4 : Installing Ansible"
-sudo pip3 install ansible
+#sudo pip3 install ansible
+brew install ansible
 
 echo "# Step 5 : Installing Git"
 brew install git

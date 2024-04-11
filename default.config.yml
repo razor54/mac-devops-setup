@@ -29,11 +29,9 @@ homebrew_installed_packages:
   - python3
   - poetry # Python package management tool
   # *** Javascript ***
-  - volta # Manage multiple Node.js versions (replace nvm)
   - node # Node JS
   # Shell Utilities
   - git
-  - httpie # User-friendly cURL replacement (command-line HTTP client)
   - jq # Lightweight and flexible command-line JSON processor
   - postgresql@14 # Command-line interface for PostgreSQL
   - coreutils # GNU File, Shell, and Text utilities
@@ -80,9 +78,10 @@ homebrew_installed_packages:
   - actionlint
   - aws-cdk
   - powerlevel10k
+  - yamllint
+  - eksctl
 
 homebrew_taps:
-  - homebrew/core
   - hashicorp/tap
   - homebrew/cask-versions
   - weaveworks/tap
@@ -140,8 +139,6 @@ homebrew_cask_apps:
   - fork # git GUI
   - disk-inventory-x
   - microsoft-teams
-  - yamllint
   - podman-desktop
-  - eksctl
   - arc
   - orbstack
