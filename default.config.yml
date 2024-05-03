@@ -81,6 +81,10 @@ homebrew_installed_packages:
   - yamllint
   - eksctl
   - nvm
+  - python-setuptools
+  - tfenv
+  - jsonlint
+  - tflint
 
 homebrew_taps:
   - hashicorp/tap
@@ -145,3 +149,5 @@ homebrew_cask_apps:
   - arc
   - orbstack
   - discord
+  - logi-options-plus
+  - smooze
