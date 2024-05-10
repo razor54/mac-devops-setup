@@ -4,9 +4,14 @@ configure_terminal: yes
 configure_osx: yes
 configure_dotfiles: yes
 
-dotfiles_repo: https://github.com/razor54/dotfiles.git
+dotfiles_repo: ssh://git@github.com/razor54/dotfiles.git
 dotfiles_repo_accept_hostkey: yes
+dotfiles_ssh_key: ~/.ssh/id_ed25519
 dotfiles_repo_local_destination: ~/dotfiles
+dotfiles_known_hosts_file: ~/.ssh/known_hosts
+dotfiles_git_server_fqdn: github.com
+dotfiles_key_title: personal-key
+
 dotfiles_files:
   - .aliases
   - .zshrc
@@ -27,7 +32,7 @@ homebrew_installed_packages:
   # *** Python ***
   - python
   - python3
-  - poetry # Python package management tool
+  #- poetry # Python package management tool
   # *** Javascript ***
   - node # Node JS
   # Shell Utilities
@@ -36,7 +41,7 @@ homebrew_installed_packages:
   - postgresql@14 # Command-line interface for PostgreSQL
   - coreutils # GNU File, Shell, and Text utilities
   - tree # Display directories as trees
-  - csshx # Cluster ssh tool for Terminal.app
+  #- csshx # Cluster ssh tool for Terminal.app
   - fzf # Command-line fuzzy finder written in Go
   - whatmask # Network settings helper
   - wget # Internet file retriever
@@ -45,7 +50,7 @@ homebrew_installed_packages:
   - openssl # OpenSSL GIO module for glib
   - pandoc # Swiss-army knife of markup format conversion
   - telnet # User interface to the TELNET protocol
-  - sshuttle # Proxy server that works as a poor man's VPN
+  #- sshuttle # Proxy server that works as a poor man's VPN
   - tldr # Simplified and community-driven man pages
   - tmux # Terminal multiplexer
   - bat # Clone of cat(1) with syntax highlighting and Git integration
@@ -53,7 +58,7 @@ homebrew_installed_packages:
   - ripgrep # Search tool like grep but much faster
   - helm
   - minikube # Run a Kubernetes cluster locally
-  - terraform
+  #- terraform
   - terraform-docs
   - terraformer
   - zsh
@@ -85,6 +90,7 @@ homebrew_installed_packages:
   - tfenv
   - jsonlint
   - tflint
+  - mrkai77/cask/loop
 
 homebrew_taps:
   - hashicorp/tap
@@ -97,19 +103,19 @@ homebrew_cask_apps:
   # - kite
   - slack # Team communication and collaboration software
   - obsidian # Knowledge base that works on top of a local folder of plain text Markdown files
-  - coconutbattery # Tool to show live information about the batteries in various devices
+  #- coconutbattery # Tool to show live information about the batteries in various devices
   - monitorcontrol # Tool to control external monitor brightness & volume
-  - raindropio # All-in-one bookmark manager
+  #- raindropio # All-in-one bookmark manager
   # Browsers
   - brave-browser
   - google-chrome
   - firefox
   # Utilities
-  - vlc # VLC media player
-  - spotify
+  #- vlc # VLC media player
+  #- spotify
   - cyberduck # browser FTP, SFTP, s3,...
   - the-unarchiver # Unpacks archive files
-  - shottr # Screenshot measurement and annotation tool
+  #- shottr # Screenshot measurement and annotation tool
   # DevOps tools
   - docker
   #- vagrant # Not working on Mac M series
@@ -118,7 +124,7 @@ homebrew_cask_apps:
   - lens # Kubernetes IDE
   # Dev environment
   - phantomjs
-  - temurin11 # Java JDK from the Eclipse Foundation (Adoptium)
+  - temurin # Java JDK from the Eclipse Foundation (Adoptium)
   - postman # Collaboration platform for API development
   - insomnia # postman alternative
   - visual-studio-code
@@ -135,7 +141,7 @@ homebrew_cask_apps:
   # CLI
   #- romkatv/powerlevel10k/powerlevel10k
   #- redisinsight
-  - bleunlock
+  #- bleunlock
   - iterm2
   - lulu # Firewall
   - flux
@@ -151,3 +157,5 @@ homebrew_cask_apps:
   - discord
   - logi-options-plus
   - smooze
+  - appcleaner
+  - rectangle

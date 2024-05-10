@@ -3,6 +3,10 @@
   connection: local
   vars_files:
     - default.config.yml
+  vars_prompt:
+    - name: GITHUB_ACCESS_TOKEN
+      prompt: "What is your github access token (PAT)?"
+
   roles:
     - role: setup_homebrew
     - role: setup_dotfiles

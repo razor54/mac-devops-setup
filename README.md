@@ -19,6 +19,12 @@ Of course, you can use yours by changing the `dotfiles_repo` variable in `defaul
 
 ## 🚀 Usage
 
+Create a PAT on github. `GITHUB_ACCESS_TOKEN`: The personal access token associated with the GitHub account being used. The token should have the following scopes:
+repo
+admin:public_key
+user
+admin:gpg_ley
+
 Edit `default.config.yml` to customize the list of software to install
 and just run the following command at the root of this project and enter your account password when prompted.
 
