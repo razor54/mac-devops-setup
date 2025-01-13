@@ -19,3 +19,4 @@ dotfiles_files:
   - .vim
   - .osx
   - .functions
+  - .config/nvim

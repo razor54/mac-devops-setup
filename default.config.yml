@@ -1,5 +1,4 @@
 ---
-
 configure_terminal: yes
 configure_osx: yes
 configure_dotfiles: yes
@@ -91,6 +90,8 @@ homebrew_installed_packages:
   - jsonlint
   - tflint
   - mrkai77/cask/loop
+  - jesseduffield/lazygit/lazygit
+  - neovim
 
 homebrew_taps:
   - hashicorp/tap
