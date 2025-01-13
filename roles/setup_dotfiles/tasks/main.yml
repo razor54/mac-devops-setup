@@ -1,7 +1,7 @@
 ---
 - name: Check if SSH key is already present
   stat:
-    path: ""
+    path: "{{ dotfiles_ssh_key }}"
   register: key_stat_result
 
 - name: Generate SSH key for accessing GitHub
@@ -30,16 +30,16 @@
 
 - name: Modify known hosts
   block:
-  - name: Fetch GitHub public key
-    command: "ssh-keyscan -T 10 {{ dotfiles_git_server_fqdn }}"
-    register: keyscan
+    - name: Fetch GitHub public key
+      command: "ssh-keyscan -T 10 {{ dotfiles_git_server_fqdn }}"
+      register: keyscan
 
-  - name: Add GitHub public key to ssh known_hosts
-    lineinfile:
-      path: "{{ dotfiles_known_hosts_file }}"
-      create: yes
-      line: "{{ item }}"
-    with_items: '{{ keyscan.stdout_lines }}'
+    - name: Add GitHub public key to ssh known_hosts
+      lineinfile:
+        path: "{{ dotfiles_known_hosts_file }}"
+        create: yes
+        line: "{{ item }}"
+      with_items: "{{ keyscan.stdout_lines }}"
   when: host_stat.rc == 1
 
 - name: Add SSH public key to GitHub account
@@ -53,10 +53,11 @@
     body_format: json
     headers:
       Content-Type: "application/json"
-      Authorization: "token {{ GITHUB_ACCESS_TOKEN }}"
+      Authorization: "token {{ GITHUB_ACCESS_TOKEN | default('') }}"
     status_code:
-    - 201
-    - 422
+      - 201
+      - 422
+  when: not key_stat_result.stat.exists
 
 - name: Ensure dotfiles repository is cloned locally.
   git:
