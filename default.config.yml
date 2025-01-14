@@ -93,6 +93,7 @@ homebrew_installed_packages:
   - mrkai77/cask/loop
   - jesseduffield/lazygit/lazygit
   - neovim
+  - pyenv
 
 homebrew_taps:
   - hashicorp/tap
