@@ -94,6 +94,8 @@ homebrew_installed_packages:
   - jesseduffield/lazygit/lazygit
   - neovim
   - pyenv
+  - jdtls
+  - lima
 
 homebrew_taps:
   - hashicorp/tap
