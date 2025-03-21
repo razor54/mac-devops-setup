@@ -108,6 +108,8 @@ homebrew_installed_packages:
   - jdtls
   - lima
   - jbang
+  - keidarcy/tap/e1s
+  - mise
 
 homebrew_taps:
   - hashicorp/tap
