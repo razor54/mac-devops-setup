@@ -21,6 +21,17 @@ dotfiles_files:
   - .osx
   - .functions
   - .config/nvim
+  - .config/wezterm
+  - .tmux.conf
+  - .local/share/nvim/lazy/overseer.nvim/lua/overseer/template/navxio/go_task.lua
+
+  # TODO: Consider using gnu stow or chezmoi
+  # see https://github.com/hamvocke/dotfiles/tree/master
+  # also: https://github.com/hamvocke/dotfiles/blob/master/zsh/.zshrc
+
+  # chezmoi config example: https://github.com/HeyItsGilbert/dotfiles/tree/main
+
+  # wezterm config example: https://github.com/zapman449/dotfiles/blob/master/wezterm/.wezterm.lua
 
 homebrew_installed_packages:
   # Dev
@@ -96,6 +107,7 @@ homebrew_installed_packages:
   - pyenv
   - jdtls
   - lima
+  - jbang
 
 homebrew_taps:
   - hashicorp/tap
@@ -164,3 +176,7 @@ homebrew_cask_apps:
   - smooze
   - appcleaner
   - rectangle
+  - floorp
+  - alacritty
+  - font-jetbrains-mono
+  - wezterm

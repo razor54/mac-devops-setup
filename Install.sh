@@ -68,3 +68,9 @@ defaults write .GlobalPreferences com.apple.mouse.scaling -1
 
 # Install sdkman
 curl -s "https://get.sdkman.io" | bash
+
+# Copy and install the remap of capslock to control (make sure the folder exists)
+mkdir -p ~/Library/KeyBindings
+cp com.user.loginscript.plist ~/Library/LaunchAgents/
+# Make sure the agent is loaded
+launchctl load ~/Library/LaunchAgents/com.user.loginscript.plist

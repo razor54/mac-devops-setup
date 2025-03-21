@@ -23,6 +23,10 @@
 ##                                                                                      ##
 ##========================================================================================
 
+# TODO: ADD nerdfonts (patched Jetbrains mono) - Find here: https://github.com/ryanoasis/nerd-fonts.github
+# path to the fonts: https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures/Regular
+# https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf
+
 
 - name: Cloning fonts
   git:
@@ -45,6 +49,12 @@
     key: PrefsCustomFolder
     type: string
     value: "{{ ansible_env.PWD }}/roles/setup_terminal/files"
+
+- name: Download JetBrainsMono Nerd Font
+  get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf
+    dest: /Library/Fonts/JetBrainsMonoNerdFont-Regular.ttf
+    mode: '0644'
 
 ##========================================================================================
 ##                                                                                      ##
