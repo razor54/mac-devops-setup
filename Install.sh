@@ -74,3 +74,6 @@ mkdir -p ~/Library/KeyBindings
 cp com.user.loginscript.plist ~/Library/LaunchAgents/
 # Make sure the agent is loaded
 launchctl load ~/Library/LaunchAgents/com.user.loginscript.plist
+
+mkdir -p $HOME/.local/share/java/lombok
+curl -o $HOME/.local/share/java/lombok/lombok.jar https://projectlombok.org/downloads/lombok.jar
