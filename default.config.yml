@@ -23,15 +23,21 @@ dotfiles_files:
   - .config/nvim
   - .config/wezterm
   - .tmux.conf
-  - .local/share/nvim/lazy/overseer.nvim/lua/overseer/template/navxio/go_task.lua
+  - .config/alacritty
+  - .config/zellij
 
   # TODO: Consider using gnu stow or chezmoi
   # see https://github.com/hamvocke/dotfiles/tree/master
   # also: https://github.com/hamvocke/dotfiles/blob/master/zsh/.zshrc
 
   # chezmoi config example: https://github.com/HeyItsGilbert/dotfiles/tree/main
-
   # wezterm config example: https://github.com/zapman449/dotfiles/blob/master/wezterm/.wezterm.lua
+  
+  # CONFIGURATION FOR Java debbugger:
+  # Checout repository: https://github.com/microsoft/java-debug 
+  # Build it: mvn clean install
+  # cp -r ~/.m2/repository/com/microsoft/java/com.microsoft.java.debug.plugin/0.53.1/com.microsoft.java.debug.plugin-0.53.1.jar /Users/andregaudencio/.local/share/nvim/mason/packages/java-debug-adapter/extension/server
+  # TODO: Automate this step
 
 homebrew_installed_packages:
   # Dev
@@ -110,6 +116,11 @@ homebrew_installed_packages:
   - jbang
   - keidarcy/tap/e1s
   - mise
+  - font-fira-code-nerd-font
+  - zellij
+  - jesseduffield/lazydocker/lazydocker
+  - eza
+  - zoxide
 
 homebrew_taps:
   - hashicorp/tap
@@ -182,3 +193,4 @@ homebrew_cask_apps:
   - alacritty
   - font-jetbrains-mono
   - wezterm
+  - alacritty
