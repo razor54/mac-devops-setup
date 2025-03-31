@@ -121,6 +121,7 @@ homebrew_installed_packages:
   - jesseduffield/lazydocker/lazydocker
   - eza
   - zoxide
+  - starship
 
 homebrew_taps:
   - hashicorp/tap
