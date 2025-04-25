@@ -6,14 +6,17 @@ xcode-select --install
 echo "# Step 2 : Installing Homebrew"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # Make sure brew is on the path
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/andregaudencio/.zprofile
+(
+    echo
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+) >>/Users/andregaudencio/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 brew doctor
 
 echo "# Step 3 : Installing Python3"
 brew install python
-echo 'export PATH="/usr/local/opt/python/libexec/bin:$PATH"' >> ~/.zshrc
+echo 'export PATH="/usr/local/opt/python/libexec/bin:$PATH"' >>~/.zshrc
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 # Install PIP -- No need anymore
@@ -33,9 +36,12 @@ ansible-galaxy install -r requirements.yml
 while true; do
     read -p "Would you like execute the playbook now? (y/n) " yn
     case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) printf "\n Execute this command when you are ready:\n  ansible-playbook setup-my-mac.yml -i inventory -K \n" ; exit;;
-        * ) echo "Please answer yes or no.";;
+    [Yy]*) break ;;
+    [Nn]*)
+        printf "\n Execute this command when you are ready:\n  ansible-playbook setup-my-mac.yml -i inventory -K \n"
+        exit
+        ;;
+    *) echo "Please answer yes or no." ;;
     esac
 done
 
@@ -48,7 +54,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 git clone --depth=1 https://github.com/romkatv/powerlevel10k $ZSH_CUSTOM/themes/powerlevel10k
 
-# Install vim color schemes 
+# Install vim color schemes
 git clone https://github.com/flazz/vim-colorschemes
 mv vim-colorschemes/colors ~/maximum-awesome
 rm -rf vim-colorschemes
@@ -77,3 +83,15 @@ launchctl load ~/Library/LaunchAgents/com.user.loginscript.plist
 
 mkdir -p $HOME/.local/share/java/lombok
 curl -o $HOME/.local/share/java/lombok/lombok.jar https://projectlombok.org/downloads/lombok.jar
+
+# TODO: Clean up
+# Update tlmgr (TeX Live package manager)
+sudo tlmgr update --self
+
+# Install recommended fonts and latexmk (for building .tex files)
+sudo tlmgr install collection-fontsrecommended latexmk
+
+# Link the poppler plugin (required for Zathura to open PDFs)
+mkdir -p $(brew --prefix zathura)/lib/zathura
+
+ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib

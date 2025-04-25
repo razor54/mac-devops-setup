@@ -21,6 +21,5 @@ dotfiles_files:
   - .functions
   - .config/nvim
   - .config/wezterm
-  - .local/share/nvim/lazy/overseer.nvim/lua/overseer/template/navxio/go_task.lua
   - .config/alacritty
   - .config/zellij

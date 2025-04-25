@@ -32,9 +32,9 @@ dotfiles_files:
 
   # chezmoi config example: https://github.com/HeyItsGilbert/dotfiles/tree/main
   # wezterm config example: https://github.com/zapman449/dotfiles/blob/master/wezterm/.wezterm.lua
-  
+
   # CONFIGURATION FOR Java debbugger:
-  # Checout repository: https://github.com/microsoft/java-debug 
+  # Checout repository: https://github.com/microsoft/java-debug
   # Build it: mvn clean install
   # cp -r ~/.m2/repository/com/microsoft/java/com.microsoft.java.debug.plugin/0.53.1/com.microsoft.java.debug.plugin-0.53.1.jar /Users/andregaudencio/.local/share/nvim/mason/packages/java-debug-adapter/extension/server
   # TODO: Automate this step
@@ -122,12 +122,19 @@ homebrew_installed_packages:
   - eza
   - zoxide
   - starship
+  - bun
+  - mactex
+  - zathura
+  - zathura-pdf-poppler
+  - skim
 
 homebrew_taps:
   - hashicorp/tap
   - homebrew/cask-versions
   - weaveworks/tap
   - homebrew/cask-fonts
+  - oven-sh/bun
+  - homebrew-zathura/zathura
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
@@ -195,3 +202,6 @@ homebrew_cask_apps:
   - font-jetbrains-mono
   - wezterm
   - alacritty
+  - zen-browser
+  #- mactex
+  #- basictex
