@@ -74,24 +74,3 @@ defaults write .GlobalPreferences com.apple.mouse.scaling -1
 
 # Install sdkman
 curl -s "https://get.sdkman.io" | bash
-
-# Copy and install the remap of capslock to control (make sure the folder exists)
-mkdir -p ~/Library/KeyBindings
-cp com.user.loginscript.plist ~/Library/LaunchAgents/
-# Make sure the agent is loaded
-launchctl load ~/Library/LaunchAgents/com.user.loginscript.plist
-
-mkdir -p $HOME/.local/share/java/lombok
-curl -o $HOME/.local/share/java/lombok/lombok.jar https://projectlombok.org/downloads/lombok.jar
-
-# TODO: Clean up
-# Update tlmgr (TeX Live package manager)
-sudo tlmgr update --self
-
-# Install recommended fonts and latexmk (for building .tex files)
-sudo tlmgr install collection-fontsrecommended latexmk
-
-# Link the poppler plugin (required for Zathura to open PDFs)
-mkdir -p $(brew --prefix zathura)/lib/zathura
-
-ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib

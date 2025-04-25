@@ -27,7 +27,6 @@
 # path to the fonts: https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/JetBrainsMono/Ligatures/Regular
 # https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf
 
-
 - name: Cloning fonts
   git:
     repo: "https://github.com/powerline/fonts"
@@ -37,9 +36,9 @@
   become: no
 
 - name: Install Fonts
-  shell: ~/.config/powerlinefonts/install.sh 
-  args: 
-    chdir: '~/.config/powerlinefonts'
+  shell: ~/.config/powerlinefonts/install.sh
+  args:
+    chdir: "~/.config/powerlinefonts"
   when: fontCloned
   become: no
 
@@ -54,7 +53,15 @@
   get_url:
     url: https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf
     dest: /Library/Fonts/JetBrainsMonoNerdFont-Regular.ttf
-    mode: '0644'
+    mode: "0644"
+
+# TODO: This hasn't been tested yet
+- name: Copy Akkurat-Mono.otf font to /Library/Fonts
+  copy:
+    src: Akkurat-Mono.otf
+    dest: /Library/Fonts/Akkurat-Mono.otf
+    mode: "0644"
+  become: true # Requires elevated permission to copy files to /Library/Fonts
 
 ##========================================================================================
 ##                                                                                      ##
@@ -62,12 +69,9 @@
 ##                                                                                      ##
 ##========================================================================================
 
-
 - name: Installing oh-my-zsh
   git:
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     dest: "~/.oh-my-zsh"
     update: yes
   when: install_oh_my_zsh
-
-

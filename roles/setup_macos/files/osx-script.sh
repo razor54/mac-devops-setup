@@ -20,7 +20,11 @@ if [[ $EUID -ne 0 ]]; then
 else
   RUN_AS_ROOT=true
   # Update existing `sudo` timestamp until `.osx` has finished
-  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+  while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+  done 2>/dev/null &
 fi
 
 ###############################################################################
@@ -36,7 +40,6 @@ fi
 # launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
 # To re-enable, run:
 # launchctl load -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist && open /System/Library/CoreServices/NotificationCenter.app/
-
 
 ###############################################################################
 # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
@@ -181,7 +184,6 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Enable the 'reduce transparency' option on Yosemite. Save GPU cycles.
 # defaults write com.apple.universalaccess reduceTransparency -bool true
 
-
 # Hot corners
 # Possible values:
 #  0: no-op
@@ -258,13 +260,13 @@ defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreade
 ###############################################################################
 
 #if [[ "$RUN_AS_ROOT" = true ]]; then
-  # Disable Spotlight indexing for any volume that gets mounted and has not yet
-  # been indexed before.
-  # Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
- # sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+# Disable Spotlight indexing for any volume that gets mounted and has not yet
+# been indexed before.
+# Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
+# sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
 
-  # Restart spotlight
- # killall mds > /dev/null 2>&1
+# Restart spotlight
+# killall mds > /dev/null 2>&1
 #fi
 
 ###############################################################################
@@ -317,8 +319,37 @@ defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreade
 # Restart affected applications if `--no-restart` flag is not present.
 if [[ ! ($* == *--no-restart*) ]]; then
   for app in "cfprefsd" "Dock" "Finder" "Mail" "SystemUIServer" "Terminal"; do
-    killall "${app}" > /dev/null 2>&1
+    killall "${app}" >/dev/null 2>&1
   done
 fi
+
+###############################################################################
+# Installing additional tools                                                 #
+###############################################################################
+
+# Copy and install the remap of capslock to control (make sure the folder exists)
+mkdir -p ~/Library/KeyBindings
+cp com.user.loginscript.plist ~/Library/LaunchAgents/
+# Make sure the agent is loaded
+launchctl load ~/Library/LaunchAgents/com.user.loginscript.plist
+
+###############################################################################
+# TODO: Maybe move the next part to a separate script                         #
+###############################################################################
+
+mkdir -p $HOME/.local/share/java/lombok
+curl -o $HOME/.local/share/java/lombok/lombok.jar https://projectlombok.org/downloads/lombok.jar
+
+# TODO: Clean up
+# Update tlmgr (TeX Live package manager)
+sudo tlmgr update --self
+
+# Install recommended fonts and latexmk (for building .tex files)
+sudo tlmgr install collection-fontsrecommended latexmk
+
+# Link the poppler plugin (required for Zathura to open PDFs)
+#mkdir -p $(brew --prefix zathura)/lib/zathura
+#
+#ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
 
 printf "Please log out and log back in to make all settings take effect.\n"

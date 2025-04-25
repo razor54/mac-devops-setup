@@ -124,9 +124,10 @@ homebrew_installed_packages:
   - starship
   - bun
   - mactex
-  - zathura
-  - zathura-pdf-poppler
+  #- zathura
+  #- zathura-pdf-poppler
   - skim
+  - vale
 
 homebrew_taps:
   - hashicorp/tap
