@@ -128,6 +128,9 @@ homebrew_installed_packages:
   #- zathura-pdf-poppler
   - skim
   - vale
+  - lua-language-server
+  - fd
+  - prettierd
 
 homebrew_taps:
   - hashicorp/tap
@@ -206,3 +209,4 @@ homebrew_cask_apps:
   - zen-browser
   #- mactex
   #- basictex
+  - librewolf
