@@ -217,3 +217,5 @@ homebrew_cask_apps:
   - librewolf
   - piphero
   - font-zed-mono-nerd-font
+  - mos
+  # - linearmouse
