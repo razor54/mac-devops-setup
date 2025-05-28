@@ -38,7 +38,7 @@ The complete list of software that the playbook is going to install is in `defau
 
 - Install homebrew and cask and install applications, utilities and QuickLook plugins.
   (e.g. Docker, Terraform, Kubectl, slack, 1password, postman,...)
-- Clone [dotfile](https://github.com/DemisR/dotfiles.git) from the Github repository.
+- Clone [dotfile](https://github.com/razor54/dotfiles.git) from the Github repository.
 - Install mas (Mac App Store command line interface)
 - Configure terminal
   - Install [iTerm2](https://iterm2.com/) and [powerlevel10k](https://github.com/romkatv/powerlevel10k)

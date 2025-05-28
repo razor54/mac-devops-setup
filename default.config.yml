@@ -25,6 +25,7 @@ dotfiles_files:
   - .tmux.conf
   - .config/alacritty
   - .config/zellij
+  - .config/starship.toml
 
   # TODO: Consider using gnu stow or chezmoi
   # see https://github.com/hamvocke/dotfiles/tree/master
@@ -131,6 +132,10 @@ homebrew_installed_packages:
   - lua-language-server
   - fd
   - prettierd
+  - bash-language-server
+  - pyright
+  - hadolint
+  - opentofu
 
 homebrew_taps:
   - hashicorp/tap
@@ -210,3 +215,5 @@ homebrew_cask_apps:
   #- mactex
   #- basictex
   - librewolf
+  - piphero
+  - font-zed-mono-nerd-font

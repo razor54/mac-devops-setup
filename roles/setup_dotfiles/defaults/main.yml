@@ -1,13 +1,11 @@
 ---
 dotfiles_repo: "https://github.com/DemisR/dotfiles.git"
 dotfiles_repo_accept_hostkey: no
-dotfiles_repo_local_destination: "~/Documents/dotfiles"
 dotfiles_ssh_key: ~/.ssh/id_ed25519
 dotfiles_repo_local_destination: ~/dotfiles
 dotfiles_known_hosts_file: ~/.ssh/known_hosts
 dotfiles_git_server_fqdn: github.com
 dotfiles_key_title: personal-key
-
 
 dotfiles_home: "~"
 dotfiles_files:
@@ -23,3 +21,4 @@ dotfiles_files:
   - .config/wezterm
   - .config/alacritty
   - .config/zellij
+  - .config/starship.toml
