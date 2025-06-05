@@ -136,6 +136,9 @@ homebrew_installed_packages:
   - pyright
   - hadolint
   - opentofu
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - zsh-history-substring-search
 
 homebrew_taps:
   - hashicorp/tap
