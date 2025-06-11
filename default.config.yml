@@ -139,6 +139,10 @@ homebrew_installed_packages:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
   - zsh-history-substring-search
+  - clang-format
+  - beautysh
+  - latexindent
+  - shfmt
 
 homebrew_taps:
   - hashicorp/tap
