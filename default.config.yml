@@ -143,6 +143,7 @@ homebrew_installed_packages:
   - beautysh
   - latexindent
   - shfmt
+  - zsh-vi-mode
 
 homebrew_taps:
   - hashicorp/tap
