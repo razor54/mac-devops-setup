@@ -144,7 +144,6 @@ homebrew_installed_packages:
   - latexindent
   - shfmt
   - zsh-vi-mode
-  - zsh
 
 homebrew_taps:
   - hashicorp/tap
