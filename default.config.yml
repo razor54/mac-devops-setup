@@ -144,6 +144,7 @@ homebrew_installed_packages:
   - latexindent
   - shfmt
   - zsh-vi-mode
+  - zsh
 
 homebrew_taps:
   - hashicorp/tap
@@ -222,8 +223,9 @@ homebrew_cask_apps:
   - zen-browser
   #- mactex
   #- basictex
-  - librewolf
+  - librewolf # this needs to be installed with `brew reinstall librewolf --no-quarantine`
   - piphero
   - font-zed-mono-nerd-font
   - mos
+  - dotnet-sdk
   # - linearmouse
