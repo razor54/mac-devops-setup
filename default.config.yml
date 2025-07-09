@@ -23,6 +23,7 @@ dotfiles_files:
   - .config/nvim
   - .config/wezterm
   - .tmux.conf
+  - .tmux.conf.local
   - .config/alacritty
   - .config/zellij
   - .config/starship.toml
@@ -144,6 +145,7 @@ homebrew_installed_packages:
   - latexindent
   - shfmt
   - zsh-vi-mode
+  - certbot
 
 homebrew_taps:
   - hashicorp/tap
