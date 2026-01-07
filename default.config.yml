@@ -146,6 +146,7 @@ homebrew_installed_packages:
   - shfmt
   - zsh-vi-mode
   - certbot
+  - copilot-cli
 
 homebrew_taps:
   - hashicorp/tap
