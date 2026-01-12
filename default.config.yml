@@ -147,6 +147,9 @@ homebrew_installed_packages:
   - zsh-vi-mode
   - certbot
   - copilot-cli
+  - ghostty
+  - watch
+  - ffmpeg
 
 homebrew_taps:
   - hashicorp/tap
