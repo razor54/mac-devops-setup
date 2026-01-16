@@ -150,6 +150,7 @@ homebrew_installed_packages:
   - ghostty
   - watch
   - ffmpeg
+  - anomalyco/tap/opencode
 
 homebrew_taps:
   - hashicorp/tap
