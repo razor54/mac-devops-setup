@@ -151,6 +151,7 @@ homebrew_installed_packages:
   - watch
   - ffmpeg
   - anomalyco/tap/opencode
+  - gemini-cli
 
 homebrew_taps:
   - hashicorp/tap
