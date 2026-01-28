@@ -126,6 +126,7 @@ homebrew_installed_packages:
   - starship
   - bun
   - mactex
+  - tectonic
   #- zathura
   #- zathura-pdf-poppler
   - skim
@@ -152,6 +153,8 @@ homebrew_installed_packages:
   - ffmpeg
   - anomalyco/tap/opencode
   - gemini-cli
+  - oven-sh/bun/bun
+  - zoxide
 
 homebrew_taps:
   - hashicorp/tap
