@@ -89,3 +89,28 @@
     state: link
   become: no
   with_items: "{{ dotfiles_files }}"
+
+- name: Ensure parent directories exist for special links.
+  file:
+    path: "{{ dotfiles_home }}/{{ item.dest | dirname }}"
+    state: directory
+  become: no
+  with_items: "{{ dotfiles_special_links | default([]) }}"
+  when: dotfiles_special_links is defined
+
+- name: Remove existing files for special links.
+  file:
+    path: "{{ dotfiles_home }}/{{ item.dest }}"
+    state: absent
+  become: no
+  with_items: "{{ dotfiles_special_links | default([]) }}"
+  when: dotfiles_special_links is defined
+
+- name: Create special symlinks.
+  file:
+    src: "{{ dotfiles_repo_local_destination }}/{{ item.src }}"
+    dest: "{{ dotfiles_home }}/{{ item.dest }}"
+    state: link
+  become: no
+  with_items: "{{ dotfiles_special_links | default([]) }}"
+  when: dotfiles_special_links is defined

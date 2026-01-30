@@ -27,6 +27,20 @@ dotfiles_files:
   - .config/alacritty
   - .config/zellij
   - .config/starship.toml
+  - .config/ghostty
+  - .config/eza
+
+dotfiles_special_links:
+  - src: .config/bat/config
+    dest: .config/bat/config
+  - src: .config/bat/themes
+    dest: .config/bat/themes
+  - src: .claude/settings.json
+    dest: .claude/settings.json
+  - src: .config/opencode/opencode.json
+    dest: .config/opencode-profiles/default/opencode.json
+  - src: .config/opencode/oh-my-opencode.json
+    dest: .config/opencode-profiles/default/oh-my-opencode.json
 
   # TODO: Consider using gnu stow or chezmoi
   # see https://github.com/hamvocke/dotfiles/tree/master
@@ -155,6 +169,7 @@ homebrew_installed_packages:
   - gemini-cli
   - oven-sh/bun/bun
   - zoxide
+  - chezmoi
 
 homebrew_taps:
   - hashicorp/tap

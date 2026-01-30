@@ -8,6 +8,7 @@ dotfiles_git_server_fqdn: github.com
 dotfiles_key_title: personal-key
 
 dotfiles_home: "~"
+dotfiles_special_links: []
 dotfiles_files:
   - .aliases
   - .zshrc
@@ -22,3 +23,6 @@ dotfiles_files:
   - .config/alacritty
   - .config/zellij
   - .config/starship.toml
+  - .config/ghostty
+  - .config/opencode
+  - .claude
