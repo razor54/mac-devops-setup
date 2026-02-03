@@ -173,11 +173,14 @@ homebrew_installed_packages:
 
 homebrew_taps:
   - hashicorp/tap
-  - homebrew/cask-versions
   - weaveworks/tap
-  - homebrew/cask-fonts
   - oven-sh/bun
   - homebrew-zathura/zathura
+  - mrkai77/cask
+  - jesseduffield/lazygit
+  - jesseduffield/lazydocker
+  - keidarcy/tap
+  - anomalyco/tap
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
