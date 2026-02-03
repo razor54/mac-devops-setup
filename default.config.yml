@@ -124,7 +124,7 @@ homebrew_installed_packages:
   - jsonlint
   - tflint
   - mrkai77/cask/loop
-  - jesseduffield/lazygit/lazygit
+  - lazygit
   - neovim
   - pyenv
   - jdtls
@@ -176,7 +176,6 @@ homebrew_taps:
   - oven-sh/bun
   - homebrew-zathura/zathura
   - mrkai77/cask
-  - jesseduffield/lazygit
   - jesseduffield/lazydocker
   - keidarcy/tap
   - anomalyco/tap
