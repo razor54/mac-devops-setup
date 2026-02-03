@@ -139,7 +139,6 @@ homebrew_installed_packages:
   - zoxide
   - starship
   - bun
-  - mactex
   - tectonic
   #- zathura
   #- zathura-pdf-poppler
