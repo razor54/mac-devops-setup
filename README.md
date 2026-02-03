@@ -52,11 +52,36 @@ The complete list of software that the playbook is going to install is in `defau
 
 ## Testing the Playbook
 
-Currently, this project is not continuously tested on all versions and architectures of MacOS.
-You can test it using MacOS VMs like:
+Test the playbook in an isolated macOS VM using [Tart](https://github.com/cirruslabs/tart) (requires Apple Silicon).
 
-- [UTM](https://mac.getutm.app)
-- [Tart](https://github.com/cirruslabs/tart) (built for CI integrations)
+### Quick Start
+
+```sh
+# One-time setup: install Tart and pull macOS image (~15GB download)
+./scripts/tart-setup.sh
+
+# Run full test (spins up VM, runs playbook, reports results)
+./scripts/tart-test.sh
+```
+
+### Available Commands
+
+```sh
+./scripts/tart-test.sh run      # Run full test suite (default)
+./scripts/tart-test.sh ssh      # SSH into running VM
+./scripts/tart-test.sh start    # Start VM with GUI (for debugging)
+./scripts/tart-test.sh stop     # Stop the VM
+./scripts/tart-test.sh reset    # Delete and recreate VM from fresh image
+```
+
+### Test Different macOS Versions
+
+```sh
+MACOS_VERSION=sonoma ./scripts/tart-setup.sh
+MACOS_VERSION=ventura ./scripts/tart-setup.sh
+```
+
+Available images: `tahoe` (default), `sequoia`, `sonoma` (see [Cirrus Labs images](https://github.com/cirruslabs/macos-image-templates))
 
 ## Similar projects and inspirations
 
