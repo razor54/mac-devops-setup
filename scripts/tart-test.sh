@@ -57,7 +57,7 @@ wait_for_ssh() {
 
 	log_info "Waiting for SSH to become available..."
 	while [[ $attempt -le $max_attempts ]]; do
-		if sshpass -p "${VM_PASS}" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 \
+		if SSHPASS="${VM_PASS}" sshpass -e ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 \
 			-o UserKnownHostsFile=/dev/null -o LogLevel=ERROR \
 			-o PreferredAuthentications=password -o PubkeyAuthentication=no \
 			"${VM_USER}@${VM_IP}" "echo 'ready'" &>/dev/null; then
@@ -73,17 +73,33 @@ wait_for_ssh() {
 	return 1
 }
 
+expand_disk() {
+	log_info "Checking disk space..."
+	# The Cirrus Labs images have a recovery partition that blocks expansion
+	# without booting into Recovery OS. We compensate by using a larger initial disk size.
+
+	ssh_cmd "diskutil list disk0"
+	ssh_cmd "df -h /"
+
+	# Note: Automated disk expansion is blocked by recovery partition on Cirrus Labs images.
+	# The workaround is using DISK_SIZE=150+ when creating the VM.
+	# Manual expansion requires: tart run <vm> --recovery, then diskutil commands
+	log_info "Note: ~44GB usable from APFS container (recovery partition blocks auto-expansion)"
+}
+
 ssh_cmd() {
-	sshpass -p "${VM_PASS}" ssh -o StrictHostKeyChecking=no \
+	SSHPASS="${VM_PASS}" sshpass -e ssh -o StrictHostKeyChecking=no \
 		-o UserKnownHostsFile=/dev/null -o LogLevel=ERROR \
 		-o PreferredAuthentications=password -o PubkeyAuthentication=no \
+		-o ConnectTimeout=10 \
 		"${VM_USER}@${VM_IP}" "$@"
 }
 
 scp_to_vm() {
-	sshpass -p "${VM_PASS}" scp -o StrictHostKeyChecking=no \
+	SSHPASS="${VM_PASS}" sshpass -e scp -o StrictHostKeyChecking=no \
 		-o UserKnownHostsFile=/dev/null -o LogLevel=ERROR \
 		-o PreferredAuthentications=password -o PubkeyAuthentication=no \
+		-o ConnectTimeout=10 \
 		-r "$1" "${VM_USER}@${VM_IP}:$2"
 }
 
@@ -123,13 +139,20 @@ run_test() {
 
 	wait_for_vm_ip
 	wait_for_ssh
+	expand_disk
 
 	log_info "Copying project files to VM..."
 	ssh_cmd "rm -rf ~/mac-devops-setup && mkdir -p ~/mac-devops-setup"
 	scp_to_vm "${PROJECT_DIR}/." "~/mac-devops-setup/"
 
 	log_info "Running Install.sh in VM (CI mode)..."
-	ssh_cmd "cd ~/mac-devops-setup && chmod +x Install.sh && ./Install.sh --ci"
+	# Pass environment variables to the VM if set
+	local ENV_VARS=""
+	[[ -n "$GITHUB_ACCESS_TOKEN" ]] && ENV_VARS+="GITHUB_ACCESS_TOKEN='${GITHUB_ACCESS_TOKEN}' "
+	[[ -n "$INSTALL_CASK_APPS" ]] && ENV_VARS+="INSTALL_CASK_APPS='${INSTALL_CASK_APPS}' "
+	ENV_VARS+="ANSIBLE_BECOME_PASSWORD='${VM_PASS}'"
+
+	ssh_cmd "cd ~/mac-devops-setup && chmod +x Install.sh && ${ENV_VARS} ./Install.sh --ci"
 
 	log_info "==> Test completed successfully!"
 
@@ -148,7 +171,7 @@ do_ssh() {
 	fi
 	ensure_sshpass
 	log_info "Connecting to ${VM_USER}@${VM_IP}..."
-	sshpass -p "${VM_PASS}" ssh -o StrictHostKeyChecking=no \
+	SSHPASS="${VM_PASS}" sshpass -e ssh -o StrictHostKeyChecking=no \
 		-o UserKnownHostsFile=/dev/null \
 		-o PreferredAuthentications=password -o PubkeyAuthentication=no \
 		"${VM_USER}@${VM_IP}"

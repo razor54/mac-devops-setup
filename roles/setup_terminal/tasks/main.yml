@@ -39,7 +39,7 @@
   shell: ~/.config/powerlinefonts/install.sh
   args:
     chdir: "~/.config/powerlinefonts"
-  when: fontCloned
+  when: fontCloned.changed
   become: no
 
 - name: iTerm custom settings file
@@ -47,7 +47,7 @@
     domain: com.googlecode.iterm2
     key: PrefsCustomFolder
     type: string
-    value: "{{ ansible_env.PWD }}/roles/setup_terminal/files"
+    value: "{{ ansible_facts.env.PWD }}/roles/setup_terminal/files"
 
 - name: Download JetBrainsMono Nerd Font
   get_url:

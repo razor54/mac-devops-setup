@@ -28,6 +28,8 @@
     state: present
     install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
   loop: "{{ homebrew_cask_apps }}"
+  tags:
+    - cask_apps
 
 - name: Check for Brewfile.
   stat:

@@ -58,6 +58,8 @@
       - 201
       - 422
   when: not key_stat_result.stat.exists
+  tags:
+    - requires_github_token
 
 - name: Ensure dotfiles repository is cloned locally.
   git:
@@ -67,28 +69,51 @@
     key_file: "{{ dotfiles_ssh_key }}"
   become: no
 
-- name: Ensure all configured dotfiles are links.
-  shell: "ls -F {{ dotfiles_home }}/{{ item }}"
-  register: existing_dotfile_info
-  failed_when: false
-  check_mode: no
-  changed_when: false
+- name: Check which dotfiles exist in repo.
+  stat:
+    path: "{{ dotfiles_repo_local_destination }}/{{ item }}"
+  register: dotfile_exists
   with_items: "{{ dotfiles_files }}"
 
-- name: Remove existing dotfiles file if a replacement is being linked.
+- name: Check if target dotfiles already exist.
+  stat:
+    path: "{{ dotfiles_home }}/{{ item.item }}"
+  register: dotfile_targets
+  with_items: "{{ dotfile_exists.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: Remove existing dotfiles if source exists in repo (to replace with symlink).
   file:
-    path: "{{ dotfiles_home }}/{{ dotfiles_files[item.0] }}"
+    path: "{{ dotfiles_home }}/{{ item.0.item }}"
     state: absent
-  when: "'@' not in item.1.stdout"
-  with_indexed_items: "{{ existing_dotfile_info.results }}"
+  when: item.0.stat.exists and item.1.stat.exists and not item.1.stat.islnk
+  with_together:
+    - "{{ dotfile_exists.results }}"
+    - "{{ dotfile_targets.results }}"
+  loop_control:
+    label: "{{ item.0.item }}"
+
+- name: Ensure parent directories exist for dotfiles.
+  file:
+    path: "{{ dotfiles_home }}/{{ item.item | dirname }}"
+    state: directory
+  become: no
+  when: item.stat.exists and '/' in item.item
+  with_items: "{{ dotfile_exists.results }}"
+  loop_control:
+    label: "{{ item.item }}"
 
 - name: Link dotfiles into home folder.
   file:
-    src: "{{ dotfiles_repo_local_destination }}/{{ item }}"
-    dest: "{{ dotfiles_home }}/{{ item }}"
+    src: "{{ dotfiles_repo_local_destination }}/{{ item.item }}"
+    dest: "{{ dotfiles_home }}/{{ item.item }}"
     state: link
   become: no
-  with_items: "{{ dotfiles_files }}"
+  when: item.stat.exists
+  with_items: "{{ dotfile_exists.results }}"
+  loop_control:
+    label: "{{ item.item }}"
 
 - name: Ensure parent directories exist for special links.
   file:

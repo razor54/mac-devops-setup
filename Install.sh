@@ -17,8 +17,17 @@ fi
 printf "# Step 1 : Installing Xcode Command Line Tools\n"
 if ! xcode-select -p &>/dev/null; then
 	if [[ "$CI_MODE" == true ]]; then
-		sudo xcode-select --install 2>/dev/null || true
-		until xcode-select -p &>/dev/null; do sleep 5; done
+		touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+		CLT_PKG=$(softwareupdate -l 2>/dev/null | grep -B 1 "Command Line Tools" | grep "Label:" | sed 's/^[^:]*: //' | head -1)
+		if [[ -n "$CLT_PKG" ]]; then
+			echo "Installing: $CLT_PKG"
+			softwareupdate -i "$CLT_PKG" --verbose
+		else
+			echo "CLT package not found via softwareupdate, trying xcode-select..."
+			sudo xcode-select --install 2>/dev/null || true
+			until xcode-select -p &>/dev/null; do sleep 5; done
+		fi
+		rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
 	else
 		xcode-select --install
 	fi
@@ -65,12 +74,24 @@ ansible-galaxy install -r requirements.yml
 if [[ "$CI_MODE" == true ]]; then
 	echo "# Running ansible setup (CI mode)"
 	ANSIBLE_ARGS=(-i inventory)
+	SKIP_TAGS=""
+
+	export ANSIBLE_LOG_PATH="$HOME/mac-devops-setup/ansible.log"
 
 	if [[ -n "$GITHUB_ACCESS_TOKEN" ]]; then
 		ANSIBLE_ARGS+=(-e "GITHUB_ACCESS_TOKEN=${GITHUB_ACCESS_TOKEN}")
 	else
 		ANSIBLE_ARGS+=(-e "GITHUB_ACCESS_TOKEN=dummy-token-for-ci")
-		ANSIBLE_ARGS+=(--skip-tags "requires_github_token")
+		SKIP_TAGS="requires_github_token"
+	fi
+
+	if [[ "$INSTALL_CASK_APPS" != "true" ]]; then
+		echo "# Skipping cask apps (set INSTALL_CASK_APPS=true to include)"
+		SKIP_TAGS="${SKIP_TAGS:+$SKIP_TAGS,}cask_apps"
+	fi
+
+	if [[ -n "$SKIP_TAGS" ]]; then
+		ANSIBLE_ARGS+=(--skip-tags "$SKIP_TAGS")
 	fi
 
 	if [[ -n "$ANSIBLE_BECOME_PASSWORD" ]]; then
@@ -131,6 +152,18 @@ fi
 if [[ ! -d ~/.vim/pack/vendor/start/nerdtree ]]; then
 	git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/vendor/start/nerdtree
 	vim -u NONE -c "helptags ~/.vim/pack/vendor/start/nerdtree/doc" -c q
+fi
+
+# Restore dotfiles symlinks that oh-my-zsh may have overwritten
+if [[ -d ~/dotfiles ]]; then
+	echo "# Restoring dotfiles symlinks..."
+	for dotfile in .zshrc .aliases .functions; do
+		if [[ -f ~/dotfiles/$dotfile && ! -L ~/$dotfile ]]; then
+			echo "  Restoring $dotfile symlink"
+			rm -f ~/$dotfile
+			ln -s ~/dotfiles/$dotfile ~/$dotfile
+		fi
+	done
 fi
 
 defaults write .GlobalPreferences com.apple.mouse.scaling -1
