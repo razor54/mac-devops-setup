@@ -37,6 +37,8 @@ dotfiles_special_links:
     dest: .config/bat/themes
   - src: .claude/settings.json
     dest: .claude/settings.json
+  - src: .config/.mcp.json
+    dest: .config/.mcp.json
   - src: .config/opencode/opencode.json
     dest: .config/opencode-profiles/default/opencode.json
   - src: .config/opencode/oh-my-opencode.json
@@ -126,6 +128,8 @@ homebrew_installed_packages:
   - mrkai77/cask/loop
   - lazygit
   - neovim
+  - tree-sitter
+  - pipx
   - pyenv
   - jdtls
   - lima
@@ -205,7 +209,7 @@ homebrew_cask_apps:
   # - hashicorp/tap/terraform
   - lens # Kubernetes IDE
   # Dev environment
-  - phantomjs
+  # - phantomjs  # DEPRECATED: cask no longer exists
   - temurin # Java JDK from the Eclipse Foundation (Adoptium)
   - postman # Collaboration platform for API development
   - insomnia # postman alternative
@@ -245,7 +249,6 @@ homebrew_cask_apps:
   - alacritty
   - font-jetbrains-mono
   - wezterm
-  - alacritty
   - zen-browser
   #- mactex
   #- basictex
