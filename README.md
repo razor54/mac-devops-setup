@@ -61,27 +61,54 @@ Test the playbook in an isolated macOS VM using [Tart](https://github.com/cirrus
 ./scripts/tart-setup.sh
 
 # Run full test (spins up VM, runs playbook, reports results)
-./scripts/tart-test.sh
+./scripts/tart-test.sh run --gui
 ```
 
 ### Available Commands
 
 ```sh
-./scripts/tart-test.sh run      # Run full test suite (default)
-./scripts/tart-test.sh ssh      # SSH into running VM
-./scripts/tart-test.sh start    # Start VM with GUI (for debugging)
-./scripts/tart-test.sh stop     # Stop the VM
-./scripts/tart-test.sh reset    # Delete and recreate VM from fresh image
+./scripts/tart-test.sh run           # Run test in headless mode
+./scripts/tart-test.sh run --gui     # Run test with GUI (watch progress)
+./scripts/tart-test.sh ssh           # SSH into running VM
+./scripts/tart-test.sh logs          # Tail install log from running VM
+./scripts/tart-test.sh start         # Start VM with GUI (for debugging)
+./scripts/tart-test.sh stop          # Stop the VM
+./scripts/tart-test.sh reset         # Delete and recreate VM from fresh image
+```
+
+### Environment Variables
+
+```sh
+# Include cask apps in test (skipped by default to save time)
+INSTALL_CASK_APPS=true ./scripts/tart-test.sh run --gui
+
+# Test with GitHub token (enables SSH key upload to GitHub)
+GITHUB_ACCESS_TOKEN=ghp_xxx ./scripts/tart-test.sh run --gui
+
+# Use custom VM name
+VM_NAME=my-test-vm ./scripts/tart-test.sh run
 ```
 
 ### Test Different macOS Versions
 
 ```sh
+MACOS_VERSION=sequoia ./scripts/tart-setup.sh
 MACOS_VERSION=sonoma ./scripts/tart-setup.sh
-MACOS_VERSION=ventura ./scripts/tart-setup.sh
 ```
 
-Available images: `tahoe` (default), `sequoia`, `sonoma` (see [Cirrus Labs images](https://github.com/cirruslabs/macos-image-templates))
+Available images: `tahoe` (default), `sequoia`, `sonoma`, `ventura` (see [Cirrus Labs images](https://github.com/cirruslabs/macos-image-templates))
+
+### Disk Space
+
+The pre-built Cirrus Labs images have ~44GB usable space due to a recovery partition. For most testing (without cask apps), this is sufficient.
+
+If you need more space (e.g., for cask apps), you can create a VM from IPSW:
+
+```sh
+USE_IPSW=true DISK_SIZE=100 ./scripts/tart-setup.sh
+```
+
+Note: IPSW setup requires completing macOS Setup Assistant manually (create user `admin`/`admin`, enable Remote Login).
 
 ## Similar projects and inspirations
 
