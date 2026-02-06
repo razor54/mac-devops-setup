@@ -15,3 +15,21 @@
       when: configure_terminal
     - role: setup_macos
       when: configure_osx
+
+  post_tasks:
+    - name: Check if Claude Code CLI is installed
+      ansible.builtin.shell: command -v claude
+      register: claude_installed
+      failed_when: false
+      changed_when: false
+
+    - name: Install Claude Code plugins
+      ansible.builtin.shell: |
+        claude --plugin install claude-mem@thedotmack
+        claude --plugin install everything-claude-code@everything-claude-code
+      args:
+        executable: /bin/zsh
+      when: configure_terminal and claude_installed.rc == 0
+      ignore_errors: yes
+      tags:
+        - claude-plugins
