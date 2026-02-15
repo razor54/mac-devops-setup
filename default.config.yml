@@ -175,6 +175,8 @@ homebrew_installed_packages:
   - chezmoi
   - golangci-lint
   - openscad
+  - jandedobbeleer/oh-my-posh/oh-my-posh
+  - bufbuild/buf/buf
 
 homebrew_taps:
   - hashicorp/tap
