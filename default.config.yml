@@ -177,6 +177,12 @@ homebrew_installed_packages:
   - openscad
   - jandedobbeleer/oh-my-posh/oh-my-posh
   - bufbuild/buf/buf
+  # *** Anvil IDP ***
+  - sqlc              # Type-safe SQL codegen
+  - golang-migrate    # DB migration CLI
+  - grpcurl           # gRPC CLI client
+  - trivy             # Container/IaC vulnerability scanner
+  - loft-sh/tap/vind  # vCluster in Docker — local K8s clusters
 
 homebrew_taps:
   - hashicorp/tap
@@ -187,6 +193,7 @@ homebrew_taps:
   - jesseduffield/lazydocker
   - keidarcy/tap
   - anomalyco/tap
+  - loft-sh/tap
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
