@@ -173,6 +173,8 @@ homebrew_installed_packages:
   - oven-sh/bun/bun
   - zoxide
   - chezmoi
+  - golangci-lint
+  - openscad
 
 homebrew_taps:
   - hashicorp/tap
