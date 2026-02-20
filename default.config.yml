@@ -178,11 +178,15 @@ homebrew_installed_packages:
   - jandedobbeleer/oh-my-posh/oh-my-posh
   - bufbuild/buf/buf
   # *** Anvil IDP ***
-  - sqlc              # Type-safe SQL codegen
-  - golang-migrate    # DB migration CLI
-  - grpcurl           # gRPC CLI client
-  - trivy             # Container/IaC vulnerability scanner
-  - loft-sh/tap/vind  # vCluster in Docker — local K8s clusters
+  - sqlc # Type-safe SQL codegen
+  - golang-migrate # DB migration CLI
+  - grpcurl # gRPC CLI client
+  - trivy # Container/IaC vulnerability scanner
+  - loft-sh/tap/vind # vCluster in Docker — local K8s clusters
+  # Ollama
+  - ollama
+  - pulumi
+  - codex
   # Claude optimization with rtk
   - rtk
 
