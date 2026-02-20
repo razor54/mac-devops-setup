@@ -183,6 +183,8 @@ homebrew_installed_packages:
   - grpcurl           # gRPC CLI client
   - trivy             # Container/IaC vulnerability scanner
   - loft-sh/tap/vind  # vCluster in Docker — local K8s clusters
+  # Claude optimization with rtk
+  - rtk
 
 homebrew_taps:
   - hashicorp/tap
