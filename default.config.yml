@@ -23,7 +23,6 @@ dotfiles_files:
   - .config/nvim
   - .config/wezterm
   - .tmux.conf
-  - .tmux.conf.local
   - .config/alacritty
   - .config/zellij
   - .config/starship.toml
@@ -88,6 +87,7 @@ homebrew_installed_packages:
   #- sshuttle # Proxy server that works as a poor man's VPN
   - tldr # Simplified and community-driven man pages
   - tmux # Terminal multiplexer
+  - tpm # Tmux Plugin Manager
   - bat # Clone of cat(1) with syntax highlighting and Git integration
   - awscli # AWS CLI
   - ripgrep # Search tool like grep but much faster
