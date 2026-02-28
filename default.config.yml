@@ -189,6 +189,7 @@ homebrew_installed_packages:
   - codex
   # Claude optimization with rtk
   - rtk
+  - vcluster
 
 homebrew_taps:
   - hashicorp/tap
