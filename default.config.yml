@@ -190,6 +190,7 @@ homebrew_installed_packages:
   # Claude optimization with rtk
   - rtk
   - vcluster
+  - dippy
 
 homebrew_taps:
   - hashicorp/tap
@@ -201,6 +202,7 @@ homebrew_taps:
   - keidarcy/tap
   - anomalyco/tap
   - loft-sh/tap
+  - ldayton/dippy
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
