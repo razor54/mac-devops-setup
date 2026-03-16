@@ -100,15 +100,40 @@ Available images: `tahoe` (default), `sequoia`, `sonoma`, `ventura` (see [Cirrus
 
 ### Disk Space
 
-The pre-built Cirrus Labs images have ~44GB usable space due to a recovery partition. For most testing (without cask apps), this is sufficient.
+#### Pre-built Images (~44GB usable)
 
-If you need more space (e.g., for cask apps), you can create a VM from IPSW:
+The pre-built Cirrus Labs images have ~44GB usable space due to a recovery partition. **The `DISK_SIZE` setting does NOT increase usable space on pre-built images** — the recovery partition blocks disk expansion. For most testing (without cask apps), 44GB is sufficient.
+
+#### IPSW Images (>=90GB usable)
+
+If you need more space (e.g., for cask apps or full installs), create a VM from IPSW:
 
 ```sh
 USE_IPSW=true DISK_SIZE=100 ./scripts/tart-setup.sh
 ```
 
-Note: IPSW setup requires completing macOS Setup Assistant manually (create user `admin`/`admin`, enable Remote Login).
+**Note**: IPSW setup requires completing macOS Setup Assistant manually:
+1. Select language and region
+2. Skip Accessibility, Migration Assistant, Apple ID
+3. Create user: `admin` / `admin`
+4. Skip Screen Time, Siri, Analytics
+5. Enable Remote Login: System Settings > General > Sharing > Remote Login (ON)
+6. Shut down the VM
+
+After completing Setup Assistant, verify disk space:
+
+```sh
+# SSH into the VM and check available space
+./scripts/tart-test.sh ssh
+# Inside VM:
+df -h /
+# Expected: >=90GB available on /
+```
+
+The `tart-test.sh` script will automatically classify disk space:
+- `prebuilt-expected`: ~44GB on pre-built images (expected, not a failure)
+- `ipsw-expected`: >=90GB on IPSW images (expected)
+- `unexpected-low-space`: <60GB on IPSW images (indicates setup issue)
 
 ## Similar projects and inspirations
 

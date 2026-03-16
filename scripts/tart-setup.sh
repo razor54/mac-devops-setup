@@ -59,6 +59,10 @@ if [[ "$USE_IPSW" == "true" ]]; then
 	echo "==> Creating macOS VM from IPSW (this takes a while on first run)..."
 	echo "    Disk size: ${DISK_SIZE}GB"
 	echo ""
+	echo "DISK EXPECTATION:"
+	echo "  With DISK_SIZE=${DISK_SIZE}GB and IPSW path, you will have >=90GB usable space"
+	echo "  after Setup Assistant completes (recovery partition is minimal with IPSW)."
+	echo ""
 	echo "NOTE: After VM boots, you must complete macOS Setup Assistant manually:"
 	echo "  1. Select language and region"
 	echo "  2. Skip Accessibility, Migration Assistant, Apple ID"
@@ -75,11 +79,20 @@ else
 	# Clone pre-built image - faster but only ~44GB usable due to recovery partition
 	echo "==> Cloning pre-built macOS ${MACOS_VERSION} image..."
 	echo "    Image: ${IMAGE}"
-	echo "    Note: Pre-built images have ~44GB usable (recovery partition blocks expansion)"
+	echo ""
+	echo "DISK CONSTRAINT (IMPORTANT):"
+	echo "  Pre-built images have ~44GB usable space regardless of DISK_SIZE setting."
+	echo "  The recovery partition blocks disk expansion on pre-built clones."
+	echo "  DISK_SIZE=${DISK_SIZE}GB will be set, but usable space remains ~44GB."
+	echo ""
+	echo "  To get >=90GB usable space, use IPSW path instead:"
+	echo "    USE_IPSW=true DISK_SIZE=100 ./scripts/tart-setup.sh"
+	echo ""
 	tart clone "${IMAGE}" "${VM_NAME}"
 
 	# Resize disk (won't help much due to recovery partition, but set it anyway)
 	echo "==> Setting disk size to ${DISK_SIZE}GB..."
+	echo "    (Note: usable space remains ~44GB due to recovery partition constraint)"
 	tart set "${VM_NAME}" --disk-size "${DISK_SIZE}"
 fi
 
