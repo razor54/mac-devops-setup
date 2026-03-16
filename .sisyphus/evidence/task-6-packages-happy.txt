@@ -1,0 +1,40 @@
+=== TASK 6: HOMEBREW PACKAGE ENTRIES VERIFICATION ===
+Timestamp: $(date)
+
+VERIFICATION RESULTS:
+====================
+
+1. YAML Validation:
+   Command: ruby -e "require 'yaml'; YAML.load_file('default.config.yml')"
+   Result: ✓ PASSED (exit code 0)
+
+2. Old Formula Entries Removed:
+   Command: grep -c "jandedobbeleer/oh-my-posh/oh-my-posh|bufbuild/buf/buf|loft-sh/tap/vind"
+   Result: ✓ PASSED (count = 0)
+
+3. Normalized oh-my-posh Entry:
+   Command: grep -E -c '^[[:space:]]*-[[:space:]]*oh-my-posh$'
+   Result: ✓ PASSED (count = 1)
+
+4. Normalized buf Entry:
+   Command: grep -E -c '^[[:space:]]*-[[:space:]]*buf$'
+   Result: ✓ PASSED (count = 1)
+
+5. vcluster Entry (unchanged):
+   Command: grep -E -c '^[[:space:]]*-[[:space:]]*vcluster$'
+   Result: ✓ PASSED (count = 1)
+
+6. Homebrew Formula Resolution:
+   Command: brew info oh-my-posh buf vcluster
+   Result: ✓ PASSED (all three formulas resolved successfully)
+   - oh-my-posh: stable 29.9.0 (installed)
+   - buf: stable 1.66.1
+   - vcluster: available
+
+EDITS APPLIED:
+==============
+✓ Line 178: jandedobbeleer/oh-my-posh/oh-my-posh → oh-my-posh
+✓ Line 179: bufbuild/buf/buf → buf
+✓ Line 185: DELETED loft-sh/tap/vind # vCluster in Docker — local K8s clusters
+
+OVERALL STATUS: ✓ ALL CHECKS PASSED

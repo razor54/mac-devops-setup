@@ -1,0 +1,55 @@
+TASK 1: CANONICAL FORMULA MAPPING FOR FAILING PACKAGES
+========================================================
+
+PRE-CHANGE BASELINE EVIDENCE
+----------------------------
+
+Grep output (all three failing packages + vcluster):
+  178:  - jandedobbeleer/oh-my-posh/oh-my-posh
+  179:  - bufbuild/buf/buf
+  185:  - loft-sh/tap/vind # vCluster in Docker — local K8s clusters
+  192:  - vcluster
+
+CANONICAL MAPPING TABLE
+-----------------------
+
+Package 1: oh-my-posh
+  Current (failing):  jandedobbeleer/oh-my-posh/oh-my-posh
+  Canonical formula:  oh-my-posh
+  Location:           line 178
+  Reason:             oh-my-posh is in homebrew-core; tap reference is invalid
+  Action:             Replace with plain formula name
+
+Package 2: buf
+  Current (failing):  bufbuild/buf/buf
+  Canonical formula:  buf
+  Location:           line 179
+  Reason:             buf is in homebrew-core; tap reference is invalid
+  Action:             Replace with plain formula name
+
+Package 3: vind
+  Current (invalid):  loft-sh/tap/vind
+  Canonical formula:  REMOVE (no valid formula exists)
+  Location:           line 185
+  Reason:             loft-sh/tap/vind was never a valid tap; vcluster already exists at line 192
+  Action:             Delete this line entirely
+
+DUPLICATE RISK ANALYSIS
+-----------------------
+
+vcluster entry count (pre-change): 1
+  - Line 192: - vcluster
+
+After planned edits:
+  - oh-my-posh: line 178 → oh-my-posh (no duplicate, new entry)
+  - buf: line 179 → buf (no duplicate, new entry)
+  - vind: line 185 → DELETED (removes invalid entry)
+  - vcluster: line 192 → unchanged (remains sole entry)
+
+CONFIRMATION
+------------
+
+✓ vcluster count = 1 (no duplicate will result from planned edits)
+✓ All three failing packages identified with canonical mappings
+✓ No new taps required; all formulas are in homebrew-core
+✓ Ready for implementation phase

@@ -1,0 +1,72 @@
+TAP-PACKAGE COHERENCE — MISMATCH REPORT
+Generated: 2026-03-16
+Source: /tmp/mac-devops-setup-tart-fix/default.config.yml
+Task: 2 — Tap-package coherence guardrail definition (ANALYSIS ONLY)
+
+═══════════════════════════════════════════════════════════════════════════════
+MISMATCHES: Fully-qualified formulas whose tap prefix is NOT in homebrew_taps
+═══════════════════════════════════════════════════════════════════════════════
+
+  MISMATCH #1
+  ───────────
+  Line:        178
+  Formula:     jandedobbeleer/oh-my-posh/oh-my-posh
+  Tap prefix:  jandedobbeleer/oh-my-posh
+  Status:      MISSING — tap not registered in homebrew_taps
+  Root cause:  oh-my-posh is in homebrew-core; fully-qualified form is unnecessary
+  Planned fix: Replace with plain formula name 'oh-my-posh' (no tap needed)
+
+  MISMATCH #2
+  ───────────
+  Line:        179
+  Formula:     bufbuild/buf/buf
+  Tap prefix:  bufbuild/buf
+  Status:      MISSING — tap not registered in homebrew_taps
+  Root cause:  buf is in homebrew-core; fully-qualified form is unnecessary
+  Planned fix: Replace with plain formula name 'buf' (no tap needed)
+
+═══════════════════════════════════════════════════════════════════════════════
+ADDITIONAL ANOMALIES (tap present but formula invalid or duplicate)
+═══════════════════════════════════════════════════════════════════════════════
+
+  ANOMALY #1 — Invalid formula (tap coherent, formula does not exist)
+  ───────────────────────────────────────────────────────────────────
+  Line:        185
+  Formula:     loft-sh/tap/vind
+  Tap prefix:  loft-sh/tap
+  Tap status:  PRESENT (line 204) — tap is registered
+  Issue:       'vind' is NOT a valid formula in loft-sh/tap
+  Duplicate:   vcluster already present at line 192 as plain formula
+  Planned fix: DELETE line 185 entirely
+
+  ANOMALY #2 — Duplicate formula (tap coherent, formula duplicated)
+  ─────────────────────────────────────────────────────────────────
+  Line:        173
+  Formula:     oven-sh/bun/bun
+  Tap prefix:  oven-sh/bun
+  Tap status:  PRESENT (line 198) — tap is registered
+  Issue:       'bun' already present at line 145 as plain formula — DUPLICATE
+  Note:        NOT in scope for this task; flagged for awareness only
+
+═══════════════════════════════════════════════════════════════════════════════
+POST-PLANNED-EDIT STATE
+═══════════════════════════════════════════════════════════════════════════════
+
+  After planned normalizations (Task 3+):
+    - line 178: jandedobbeleer/oh-my-posh/oh-my-posh → 'oh-my-posh' (plain)
+    - line 179: bufbuild/buf/buf → 'buf' (plain)
+    - line 185: loft-sh/tap/vind → DELETED
+
+  Post-edit coherence status:
+    "No mismatches after planned normalization"
+
+  Remaining fully-qualified entries post-edit (all tap-coherent):
+    - mrkai77/cask/loop          → mrkai77/cask             PRESENT ✓
+    - keidarcy/tap/e1s           → keidarcy/tap             PRESENT ✓
+    - jesseduffield/lazydocker/lazydocker → jesseduffield/lazydocker PRESENT ✓
+    - anomalyco/tap/opencode     → anomalyco/tap            PRESENT ✓
+    - oven-sh/bun/bun            → oven-sh/bun              PRESENT ✓ (duplicate, not in scope)
+
+═══════════════════════════════════════════════════════════════════════════════
+END OF MISMATCH REPORT
+═══════════════════════════════════════════════════════════════════════════════

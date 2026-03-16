@@ -1,0 +1,160 @@
+IPSW VM REPRODUCIBILITY CHECKLIST
+==================================
+Generated: 2026-03-16
+Source: scripts/tart-setup.sh (lines 57-103), scripts/tart-test.sh (lines 140-165), README.md (lines 101-112)
+
+PURPOSE: Operator checklist for creating a reproducible macOS VM from IPSW with
+         full disk space (>=90GB usable). Required when pre-built Cirrus Labs
+         images (~44GB usable) are insufficient (e.g., cask app testing).
+
+PREREQUISITES:
+  - Tart installed: `brew install cirruslabs/cli/tart`
+  - Apple Silicon Mac (IPSW VMs require ARM)
+  - ~20GB free disk space for IPSW download + VM creation
+  - macOS host with GUI access (Setup Assistant requires display)
+
+==================================
+PRE-MANUAL STAGE (agent-executable)
+==================================
+
+[ ] 1. Verify Tart is installed and functional:
+       Command: tart --version
+       Expected: version string printed (e.g., "tart version 2.x.x"), exit code 0
+
+[ ] 2. Verify no conflicting VM exists with target name:
+       Command: tart list | grep macos-test
+       Expected: no output (VM does not exist yet), OR delete existing:
+                 tart delete macos-test
+
+[ ] 3. Create VM from IPSW with full disk allocation:
+       Command: USE_IPSW=true DISK_SIZE=100 VM_NAME=macos-test ./scripts/tart-setup.sh
+       Expected: Script prints "Creating macOS VM from IPSW", tart downloads
+                 latest IPSW (~13GB), creates VM, then launches GUI window.
+       Duration: 10-30 minutes depending on network speed.
+       Success indicator: tart GUI window opens showing macOS boot sequence.
+
+[ ] 4. Wait for VM to reach Setup Assistant:
+       Criteria: GUI window shows language selection screen (globe icon with
+                 language list). macOS boot spinner has completed.
+
+*** MANUAL BOUNDARY — HUMAN REQUIRED ***
+=========================================
+The following steps CANNOT be automated. A human operator must interact
+with the VM GUI window. Estimated time: 5-10 minutes.
+=========================================
+
+[ ] 5. [MANUAL] Select language and region:
+       Action: Click "English" (or preferred language) > Continue
+       Action: Select region (e.g., "United States") > Continue
+       Criteria: Proceeds to Accessibility screen.
+
+[ ] 6. [MANUAL] Skip Accessibility:
+       Action: Click "Not Now" on Accessibility screen
+       Criteria: Proceeds to Migration Assistant screen.
+
+[ ] 7. [MANUAL] Skip Migration Assistant:
+       Action: Click "Not Now" on Migration Assistant screen
+       Criteria: Proceeds to Apple ID sign-in screen.
+
+[ ] 8. [MANUAL] Skip Apple ID:
+       Action: Click "Set Up Later" or "Skip" on Apple ID screen
+       Action: Confirm skip when prompted ("Skip" in dialog)
+       Criteria: Proceeds to Terms and Conditions screen.
+
+[ ] 9. [MANUAL] Accept Terms and Conditions:
+       Action: Click "Agree" > Confirm "Agree" in dialog
+       Criteria: Proceeds to Create Computer Account screen.
+
+[ ] 10. [MANUAL] Create local admin account:
+        Action: Full Name: admin
+        Action: Account Name: admin  (auto-filled, verify it shows "admin")
+        Action: Password: admin
+        Action: Verify Password: admin
+        Action: Password Hint: (leave blank)
+        Action: Click "Continue"
+        Criteria: Account name field shows exactly "admin" (not "Admin" or other).
+
+[ ] 11. [MANUAL] Skip Screen Time:
+        Action: Click "Set Up Later" on Screen Time screen
+        Criteria: Proceeds to next screen.
+
+[ ] 12. [MANUAL] Skip Siri:
+        Action: Uncheck "Enable Ask Siri" if checked, click "Continue"
+        Criteria: Proceeds to Analytics screen.
+
+[ ] 13. [MANUAL] Skip Analytics:
+        Action: Uncheck any analytics options, click "Continue"
+        Criteria: Desktop appears. Setup Assistant is complete.
+
+[ ] 14. [MANUAL] Enable Remote Login (SSH):
+        Action: Open System Settings (Apple menu > System Settings)
+        Action: Navigate to General > Sharing
+        Action: Toggle "Remote Login" to ON
+        Action: Confirm the setting shows "Remote Login: On"
+        Criteria: Status indicator next to Remote Login is green/enabled.
+                  Note the IP address shown (e.g., "To log in to this computer
+                  remotely, type: ssh admin@192.168.x.x")
+
+[ ] 15. [MANUAL] Shut down the VM cleanly:
+        Action: Apple menu > Shut Down
+        Action: Click "Shut Down" in confirmation dialog
+        Criteria: VM GUI window closes. tart process exits.
+        DO NOT: Force-close the window or kill the tart process.
+
+*** END MANUAL BOUNDARY ***
+============================
+
+==================================
+POST-MANUAL STAGE (agent-executable)
+==================================
+
+[ ] 16. Verify VM exists in tart registry:
+        Command: tart list
+        Expected: Output includes a line with "macos-test" and state "stopped"
+        Example output line: "macos-test  stopped  ..."
+
+[ ] 17. Start VM in headless mode:
+        Command: tart run macos-test --no-graphics &
+        Expected: Command returns immediately (backgrounded). VM starts booting.
+        Verify background process: jobs -l  (shows tart process running)
+
+[ ] 18. Wait for VM to obtain IP address:
+        Command: for i in $(seq 1 30); do tart ip macos-test 2>/dev/null && break; sleep 5; done
+        Expected: IP address printed (e.g., "192.168.64.5") within 150 seconds.
+        Failure criteria: No IP after 150 seconds = VM failed to boot.
+
+[ ] 19. Wait for SSH to become available:
+        Command: ./scripts/tart-test.sh ssh
+        Expected: SSH connection established, shell prompt appears.
+        Alternative: ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no admin@$(tart ip macos-test)
+        Failure criteria: "Connection refused" after 60 seconds = Remote Login not enabled.
+
+[ ] 20. Verify disk space meets requirement:
+        Command: ssh -o StrictHostKeyChecking=no admin@$(tart ip macos-test) "df -h /"
+        Expected output format:
+          Filesystem   Size   Used  Avail Capacity  iused ifree %iused  Mounted on
+          /dev/disk3s5  93Gi   8.5Gi  84Gi    10%  ...   /
+        Pass criteria: "Avail" column shows >=90G (e.g., "84Gi", "90Gi", "92Gi")
+        Fail criteria: "Avail" column shows <50G — indicates IPSW was not used
+                       or disk expansion failed.
+
+[ ] 21. Capture disk verification evidence:
+        Command: ssh -o StrictHostKeyChecking=no admin@$(tart ip macos-test) "df -h /" > .sisyphus/evidence/ipsw-disk-verification.txt
+        Expected: File created at .sisyphus/evidence/ipsw-disk-verification.txt
+        Verify: cat .sisyphus/evidence/ipsw-disk-verification.txt  (shows df output)
+
+[ ] 22. Verify SSH user is correct:
+        Command: ssh -o StrictHostKeyChecking=no admin@$(tart ip macos-test) "whoami"
+        Expected: "admin"
+        Fail criteria: "Permission denied" = wrong password or user not created as "admin"
+
+[ ] 23. (Optional) Save as reusable base image to avoid repeating manual steps:
+        Command: tart clone macos-test macos-base
+        Expected: "macos-base" appears in tart list output
+        Benefit: Future test runs can use VM_NAME=macos-base ./scripts/tart-test.sh run
+                 without repeating Setup Assistant.
+
+==================================
+CHECKLIST COMPLETE
+==================================
+All steps passed = VM is ready for: ./scripts/tart-test.sh run
