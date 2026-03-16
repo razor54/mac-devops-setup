@@ -1,0 +1,11 @@
+REGRESSION COMMAND MATRIX - ERROR PATH
+=======================================
+Executed: 2026-03-16
+Worktree: /tmp/mac-devops-setup-tart-fix
+
+All baseline commands passed as expected.
+
+No unexpected failures detected.
+No error conditions encountered.
+
+Matrix Status: CLEAN ✓

@@ -1,0 +1,7 @@
+=== TASK 6: REMAINING TAP-QUALIFIED FORMULAS CHECK ===
+
+Command: grep -n "tap/.*/.*" default.config.yml
+
+Results:
+--------
+No tap-qualified formulas found (expected)

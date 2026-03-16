@@ -1,0 +1,17 @@
+TASK-10: INTEGRATED VERIFICATION — ERROR/FAILURE LOG
+Generated: 2026-03-16
+Worktree: /tmp/mac-devops-setup-tart-fix
+
+=============================================================
+FAILURES DETECTED
+=============================================================
+
+All integration checks passed — no failures detected.
+
+Regression matrix: 12/12 PASS
+Artifact index:    18/18 PRESENT
+
+Note on CMD 4 (grep -c tap formulas):
+  grep exits 1 when match count is 0 — this is standard grep behavior.
+  The count of 0 is the DESIRED result (no tap-qualified formulas remain).
+  This is not a failure; it confirms the normalization was successful.

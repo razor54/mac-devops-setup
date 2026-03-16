@@ -1,0 +1,133 @@
+================================================================================
+TASK 3: DISK VALIDATION THRESHOLD SPECIFICATION
+Evidence File: task-3-threshold-happy.txt
+Date: 2026-03-16
+================================================================================
+
+GREP OUTPUT - CURRENT SCRIPT BEHAVIOR
+================================================================================
+
+tart-setup.sh references:
+  Line 12:  DISK_SIZE="${DISK_SIZE:-100}"
+  Line 14:  # Pre-built is default: admin/admin user, SSH enabled, ready to use (but ~44GB usable due to recovery partition)
+  Line 15:  # Set USE_IPSW=true for full disk, but requires manual Setup Assistant completion
+  Line 16:  USE_IPSW="${USE_IPSW:-false}"
+  Line 57:  if [[ "$USE_IPSW" == "true" ]]; then
+  Line 60:  echo "    Disk size: ${DISK_SIZE}GB"
+  Line 69:  tart create "${VM_NAME}" --from-ipsw=latest --disk-size="${DISK_SIZE}"
+  Line 75:  # Clone pre-built image - faster but only ~44GB usable due to recovery partition
+  Line 78:  echo "    Note: Pre-built images have ~44GB usable (recovery partition blocks expansion)"
+  Line 81:  # Resize disk (won't help much due to recovery partition, but set it anyway)
+
+tart-test.sh references:
+  Line 78:  # The Cirrus Labs images have a recovery partition that blocks expansion
+  Line 84:  # Note: Automated disk expansion is blocked by recovery partition on Cirrus Labs images.
+  Line 85:  # The workaround is using DISK_SIZE=150+ when creating the VM.
+  Line 86:  # Manual expansion requires: tart run <vm> --recovery, then diskutil commands
+  Line 87:  log_info "Note: ~44GB usable from APFS container (recovery partition blocks auto-expansion)"
+
+================================================================================
+THRESHOLD DECISION TABLE
+================================================================================
+
+Classification: PREBUILT-EXPECTED
+  Path: Cirrus Labs pre-built image (USE_IPSW=false, default)
+  Expected Usable Space: ~44GB
+  Threshold Range: 40GB - 48GB (±4GB tolerance for APFS variance)
+  Semantics: PASS (expected behavior, not a failure)
+  Rationale: Recovery partition blocks automatic expansion. DISK_SIZE setting
+             does not increase usable space on prebuilt images.
+  Evidence: tart-setup.sh:75-83, tart-test.sh:87
+
+Classification: IPSW-EXPECTED
+  Path: IPSW fresh install (USE_IPSW=true, DISK_SIZE=100)
+  Expected Usable Space: >=90GB
+  Threshold Range: 90GB - 100GB (after Setup Assistant completion)
+  Semantics: PASS (expected behavior, full disk available)
+  Rationale: IPSW creates fresh macOS with full disk allocation. DISK_SIZE=100
+             provides 100GB total, minus ~10GB for system/recovery = ~90GB usable.
+  Evidence: tart-setup.sh:57-69, task context
+
+Classification: UNEXPECTED-LOW-SPACE
+  Path: IPSW path with insufficient space
+  Unexpected Threshold: <60GB usable
+  Semantics: WARN/FAIL (indicates setup issue or incomplete Setup Assistant)
+  Rationale: IPSW should provide >=90GB. If <60GB detected, indicates:
+             - Setup Assistant not completed (system still initializing)
+             - Disk allocation failed
+             - Unexpected system state
+  Evidence: Derived from IPSW-EXPECTED baseline
+
+================================================================================
+PASS/FAIL/WARN SEMANTICS
+================================================================================
+
+PREBUILT PATH (USE_IPSW=false):
+  ✓ PASS: 40GB ≤ usable ≤ 48GB
+    → Classification: prebuilt-expected
+    → Action: Continue testing (expected behavior)
+    → Log Level: INFO
+
+  ⚠ WARN: 48GB < usable ≤ 60GB
+    → Classification: prebuilt-unexpected-high
+    → Action: Log anomaly, continue testing
+    → Log Level: WARN
+    → Reason: Recovery partition may have been manually expanded
+
+  ✗ FAIL: usable < 40GB
+    → Classification: prebuilt-unexpected-low
+    → Action: Abort testing (disk corruption or setup failure)
+    → Log Level: ERROR
+    → Reason: Insufficient space for prebuilt baseline
+
+IPSW PATH (USE_IPSW=true, DISK_SIZE=100):
+  ✓ PASS: usable ≥ 90GB
+    → Classification: ipsw-expected
+    → Action: Continue testing (expected behavior)
+    → Log Level: INFO
+
+  ⚠ WARN: 60GB ≤ usable < 90GB
+    → Classification: unexpected-low-space
+    → Action: Log warning, continue with caution
+    → Log Level: WARN
+    → Reason: Setup Assistant may not be complete, or disk allocation partial
+
+  ✗ FAIL: usable < 60GB
+    → Classification: unexpected-low-space
+    → Action: Abort testing (critical setup failure)
+    → Log Level: ERROR
+    → Reason: IPSW should provide >=90GB; <60GB indicates setup failure
+
+================================================================================
+THRESHOLD DISTINGUISHABILITY CONFIRMATION
+================================================================================
+
+Prebuilt Expected Range:  40GB - 48GB
+IPSW Expected Range:      90GB - 100GB
+Unexpected-Low Boundary:  <60GB
+
+✓ CONFIRMED: Thresholds are strictly distinguishable with NO OVERLAP
+  - Prebuilt max (48GB) < Unexpected-Low boundary (60GB) < IPSW min (90GB)
+  - Clear separation: 12GB gap between prebuilt and unexpected-low
+  - Clear separation: 30GB gap between unexpected-low and IPSW
+  - No ambiguous overlap region
+
+Validation: IPSW threshold (>=90GB) > Prebuilt threshold (~44GB)
+  Difference: 46GB (strictly non-overlapping)
+
+================================================================================
+IMPLEMENTATION NOTES FOR TASK 7
+================================================================================
+
+The expand_disk() function in tart-test.sh:76 currently:
+  - Logs disk information via ssh_cmd
+  - Does NOT validate against thresholds
+  - Does NOT classify disk state
+
+Task 7 will enhance this with:
+  - DISK_CHECK_OVERRIDE_AVAIL_GB env var for deterministic testing
+  - Threshold validation logic using classifications above
+  - Pass/fail/warn semantics enforcement
+  - Proper error handling for unexpected-low-space condition
+
+================================================================================

@@ -1,0 +1,224 @@
+IPSW CHECKLIST LINT REPORT
+===========================
+Generated: 2026-03-16
+Checklist file: task-4-checklist-happy.txt
+Lint tool: manual static analysis against vague-language criteria
+
+LINT RULES APPLIED:
+  RULE-1: No step may use "verify it works" without measurable criteria
+  RULE-2: No step may use "check manually" without specifying what to check
+  RULE-3: Every automated step must include an explicit command
+  RULE-4: Every manual step must include explicit UI navigation path
+  RULE-5: Every step must include pass/fail criteria or expected output
+  RULE-6: No step may claim automation of inherently manual processes
+
+===========================
+STEP-BY-STEP ANALYSIS
+===========================
+
+Step 1 — "Verify Tart is installed and functional"
+  Command: tart --version
+  Expected: version string, exit code 0
+  RULE-1: PASS — criteria is "version string printed, exit code 0"
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — expected output specified
+  VERDICT: CLEAN
+
+Step 2 — "Verify no conflicting VM exists"
+  Command: tart list | grep macos-test
+  Expected: no output
+  RULE-1: PASS — criteria is "no output"
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — expected output and remediation command specified
+  VERDICT: CLEAN
+
+Step 3 — "Create VM from IPSW"
+  Command: USE_IPSW=true DISK_SIZE=100 VM_NAME=macos-test ./scripts/tart-setup.sh
+  Expected: GUI window opens showing macOS boot sequence
+  RULE-1: PASS — success indicator is "tart GUI window opens"
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — duration estimate and success indicator specified
+  VERDICT: CLEAN
+
+Step 4 — "Wait for VM to reach Setup Assistant"
+  Criteria: GUI window shows language selection screen (globe icon)
+  RULE-1: PASS — criteria is visual: "globe icon with language list"
+  RULE-5: PASS — explicit visual criteria provided
+  VERDICT: CLEAN
+
+Step 5 — "[MANUAL] Select language and region"
+  Action: Click "English" > Continue; Select region > Continue
+  Criteria: Proceeds to Accessibility screen
+  RULE-2: PASS — specifies exact UI element ("English", "Continue")
+  RULE-4: PASS — explicit UI navigation path
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 6 — "[MANUAL] Skip Accessibility"
+  Action: Click "Not Now"
+  Criteria: Proceeds to Migration Assistant screen
+  RULE-2: PASS — exact button label specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 7 — "[MANUAL] Skip Migration Assistant"
+  Action: Click "Not Now"
+  Criteria: Proceeds to Apple ID screen
+  RULE-2: PASS — exact button label specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 8 — "[MANUAL] Skip Apple ID"
+  Action: Click "Set Up Later" or "Skip"; confirm skip
+  Criteria: Proceeds to Terms and Conditions screen
+  RULE-2: PASS — exact button labels specified with alternatives
+  RULE-4: PASS — explicit UI navigation including confirmation dialog
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 9 — "[MANUAL] Accept Terms and Conditions"
+  Action: Click "Agree" > Confirm "Agree"
+  Criteria: Proceeds to Create Computer Account screen
+  RULE-2: PASS — exact button label and confirmation step specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 10 — "[MANUAL] Create local admin account"
+  Action: Full Name=admin, Account Name=admin, Password=admin
+  Criteria: Account name field shows exactly "admin"
+  RULE-2: PASS — exact field values specified
+  RULE-4: PASS — explicit field-by-field instructions
+  RULE-5: PASS — exact string match criteria ("exactly 'admin'")
+  VERDICT: CLEAN
+
+Step 11 — "[MANUAL] Skip Screen Time"
+  Action: Click "Set Up Later"
+  Criteria: Proceeds to next screen
+  RULE-2: PASS — exact button label specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 12 — "[MANUAL] Skip Siri"
+  Action: Uncheck "Enable Ask Siri", click "Continue"
+  Criteria: Proceeds to Analytics screen
+  RULE-2: PASS — exact checkbox label and button specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — transition criteria specified
+  VERDICT: CLEAN
+
+Step 13 — "[MANUAL] Skip Analytics"
+  Action: Uncheck analytics options, click "Continue"
+  Criteria: Desktop appears, Setup Assistant complete
+  RULE-2: PASS — action and completion state specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — completion criteria is "Desktop appears"
+  VERDICT: CLEAN
+
+Step 14 — "[MANUAL] Enable Remote Login"
+  Action: Apple menu > System Settings > General > Sharing > Remote Login ON
+  Criteria: Status indicator green/enabled; IP address shown
+  RULE-2: PASS — full navigation path specified
+  RULE-4: PASS — explicit step-by-step UI path
+  RULE-5: PASS — visual confirmation criteria (green indicator + IP shown)
+  VERDICT: CLEAN
+
+Step 15 — "[MANUAL] Shut down the VM cleanly"
+  Action: Apple menu > Shut Down > Confirm
+  Criteria: VM GUI window closes, tart process exits
+  RULE-2: PASS — exact menu path and confirmation specified
+  RULE-4: PASS — explicit UI navigation
+  RULE-5: PASS — observable outcome specified (window closes)
+  NOTE: Explicit "DO NOT force-close" warning included — prevents data corruption
+  VERDICT: CLEAN
+
+Step 16 — "Verify VM exists in tart registry"
+  Command: tart list
+  Expected: line with "macos-test" and state "stopped"
+  RULE-1: PASS — criteria is exact string match in output
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — example output line provided
+  VERDICT: CLEAN
+
+Step 17 — "Start VM in headless mode"
+  Command: tart run macos-test --no-graphics &
+  Expected: command returns immediately, background process visible via jobs -l
+  RULE-1: PASS — criteria is "command returns immediately"
+  RULE-3: PASS — explicit command with verification command
+  RULE-5: PASS — verification command specified
+  VERDICT: CLEAN
+
+Step 18 — "Wait for VM to obtain IP address"
+  Command: for i in $(seq 1 30); do tart ip macos-test 2>/dev/null && break; sleep 5; done
+  Expected: IP address printed within 150 seconds
+  RULE-1: PASS — criteria is "IP address printed"
+  RULE-3: PASS — explicit polling command provided
+  RULE-5: PASS — timeout and failure criteria specified
+  VERDICT: CLEAN
+
+Step 19 — "Wait for SSH to become available"
+  Command: ./scripts/tart-test.sh ssh
+  Expected: SSH connection established, shell prompt appears
+  RULE-1: PASS — criteria is "shell prompt appears"
+  RULE-3: PASS — explicit command with alternative provided
+  RULE-5: PASS — failure criteria specified ("Connection refused after 60s")
+  VERDICT: CLEAN
+
+Step 20 — "Verify disk space meets requirement"
+  Command: ssh ... "df -h /"
+  Expected: Avail column >=90G
+  RULE-1: PASS — criteria is numeric threshold (>=90G)
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — example output, pass criteria (>=90G), fail criteria (<50G) all specified
+  VERDICT: CLEAN
+
+Step 21 — "Capture disk verification evidence"
+  Command: ssh ... "df -h /" > .sisyphus/evidence/ipsw-disk-verification.txt
+  Expected: file created, readable via cat
+  RULE-1: PASS — criteria is file existence and content
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — verification command specified
+  VERDICT: CLEAN
+
+Step 22 — "Verify SSH user is correct"
+  Command: ssh ... "whoami"
+  Expected: "admin"
+  RULE-1: PASS — criteria is exact string match ("admin")
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — exact expected output and failure criteria specified
+  VERDICT: CLEAN
+
+Step 23 — "(Optional) Save as reusable base image"
+  Command: tart clone macos-test macos-base
+  Expected: "macos-base" in tart list
+  RULE-1: PASS — criteria is observable output
+  RULE-3: PASS — explicit command provided
+  RULE-5: PASS — verification step specified
+  VERDICT: CLEAN
+
+===========================
+SUMMARY
+===========================
+
+Total steps analyzed: 23
+Steps with vague language: 0
+Steps missing commands (automated): 0
+Steps missing UI path (manual): 0
+Steps missing pass/fail criteria: 0
+Steps claiming false automation: 0
+
+RULE-1 violations (vague validation): 0
+RULE-2 violations (vague manual check): 0
+RULE-3 violations (missing command): 0
+RULE-4 violations (missing UI path): 0
+RULE-5 violations (missing criteria): 0
+RULE-6 violations (false automation claim): 0
+
+LINT RESULT: PASS
+No vague validation language detected.
+All steps have concrete commands or explicit UI navigation paths.
+All steps have measurable pass/fail criteria.
+Manual boundary is clearly marked with *** delimiters.

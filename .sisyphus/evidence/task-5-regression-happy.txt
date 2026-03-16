@@ -1,0 +1,86 @@
+REGRESSION COMMAND MATRIX - HAPPY PATH
+======================================
+Executed: 2026-03-16
+Worktree: /tmp/mac-devops-setup-tart-fix
+
+COMMAND 1: YAML Validation
+---------------------------
+Command: ruby -e "require 'yaml'; YAML.load_file('default.config.yml')"
+Output: (no output - successful parse)
+Exit Code: 0
+Status: PASS ✓
+Notes: YAML file is syntactically valid
+
+COMMAND 2: Ansible Playbook Syntax Check
+-----------------------------------------
+Command: ansible-playbook setup-my-mac.yml -i inventory --syntax-check
+Output:
+  playbook: setup-my-mac.yml
+Exit Code: 0
+Status: PASS ✓
+Notes: Playbook syntax is valid, no errors detected
+
+COMMAND 3: Script Help Output
+------------------------------
+Command: ./scripts/tart-test.sh help
+Output:
+  Tart VM Test Runner for mac-devops-setup
+  
+  Usage: tart-test.sh [command] [options]
+  
+  Commands:
+      run         Run the full test suite (default)
+      ssh         Open SSH session to running VM
+      logs        Tail the install log from running VM
+      start       Start VM in GUI mode (for debugging)
+      stop        Stop the VM
+      reset       Delete and recreate VM from fresh image
+      help        Show this help message
+  
+  Options:
+      --gui       Run VM with GUI to watch progress (keeps open after test)
+  
+  Environment Variables:
+      VM_NAME                 VM name (default: macos-test)
+      VM_USER                 VM username (default: admin)
+      VM_PASS                 VM password (default: admin)
+      GITHUB_ACCESS_TOKEN     GitHub PAT for full test (optional)
+  
+  Examples:
+      ./scripts/tart-test.sh run
+      ./scripts/tart-test.sh run --gui
+      GITHUB_ACCESS_TOKEN=ghp_xxx ./scripts/tart-test.sh run --gui
+      ./scripts/tart-test.sh ssh
+      ./scripts/tart-test.sh start
+Exit Code: 0
+Status: PASS ✓
+Notes: Help output displays correctly, script is executable
+
+COMMAND 4: Grep for Failing Entries (Pre-Fix Baseline)
+-------------------------------------------------------
+Command: grep -n "jandedobbeleer/oh-my-posh/oh-my-posh\|bufbuild/buf/buf\|loft-sh/tap/vind" default.config.yml
+Output:
+  178:  - jandedobbeleer/oh-my-posh/oh-my-posh
+  179:  - bufbuild/buf/buf
+  185:  - loft-sh/tap/vind # vCluster in Docker — local K8s clusters
+Exit Code: 0
+Status: PASS ✓
+Notes: All 3 failing entries present as expected (pre-fix baseline confirmed)
+
+COMMAND 5: vCluster Count
+--------------------------
+Command: grep -E -c '^[[:space:]]*-[[:space:]]*vcluster$' default.config.yml
+Output: 1
+Exit Code: 0
+Status: PASS ✓
+Notes: vcluster appears exactly once (expected count)
+
+SUMMARY
+=======
+Total Commands: 5
+Passed: 5
+Failed: 0
+Exit Code Status: All 0 (as expected)
+
+All baseline regression tests passed successfully.
+Matrix validates YAML syntax, Ansible playbook structure, script functionality, and pre-fix state.

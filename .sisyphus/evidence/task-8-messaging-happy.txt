@@ -1,0 +1,61 @@
+=== TASK 8: MESSAGING ALIGNMENT - HAPPY PATH ===
+
+GREP OUTPUT (recovery partition, usable, USE_IPSW, DISK_SIZE):
+🔍 21 in 8F:
+
+📄 /.../scripts/tart-setup.sh (14):
+    15: # Set USE_IPSW=true for full disk, but requires manual Setup Assistant comple...
+    57: if [[ "$USE_IPSW" == "true" ]]; then
+    63: echo "  With DISK_SIZE=${DISK_SIZE}GB and IPSW path, you will have >=90GB usa...
+    64: echo "  after Setup Assistant completes (recovery partition is minimal with I...
+    73: tart create "${VM_NAME}" --from-ipsw=latest --disk-size="${DISK_SIZE}"
+    79: # Clone pre-built image - faster but only ~44GB usable due to recovery partition
+    84: echo "  Pre-built images have ~44GB usable space regardless of DISK_SIZE sett...
+    85: echo "  The recovery partition blocks disk expansion on pre-built clones."
+    86: echo "  DISK_SIZE=${DISK_SIZE}GB will be set, but usable space remains ~44GB."
+    89: echo "    USE_IPSW=true DISK_SIZE=100 ./scripts/tart-setup.sh"
+  +4
+
+📄 113 (1):
+     0: tart clone ${VM_NAME} macos-base"
+
+📄 12 (1):
+     0: -100}"
+
+📄 14 (1):
+     0: admin/admin user, SSH enabled, ready to use (but ~44GB usable due to recovery...
+
+📄 16 (1):
+     0: -false}"
+
+📄 60 (1):
+     0: ${DISK_SIZE}GB"
+
+📄 88 (1):
+     0: "
+
+📄 95 (1):
+     0: usable space remains ~44GB due to recovery partition constraint)"
+
+... +4
+
+IPSW BRANCH MESSAGING (lines 57-73):
+✓ Added explicit disk expectation: "With DISK_SIZE=${DISK_SIZE}GB and IPSW path, you will have >=90GB usable space"
+✓ Clarified recovery partition is minimal with IPSW
+✓ Messaging clearly communicates >=90GB usable space threshold
+
+PREBUILT BRANCH MESSAGING (lines 75-84):
+✓ Added explicit constraint: "Pre-built images have ~44GB usable space regardless of DISK_SIZE setting"
+✓ Explained recovery partition blocks expansion on pre-built clones
+✓ Clarified DISK_SIZE setting does NOT increase usable space on prebuilt
+✓ Added explicit guidance: "To get >=90GB usable space, use IPSW path instead"
+✓ Added note on disk-size set call: "(Note: usable space remains ~44GB due to recovery partition constraint)"
+
+SYNTAX CHECK:
+✓ bash -n /tmp/mac-devops-setup-tart-fix/scripts/tart-setup.sh passed (exit 0)
+
+MESSAGING ALIGNMENT COMPLETE:
+- Both branches now have explicit disk expectation language
+- Prebuilt constraint (~44GB) is crystal clear
+- IPSW path requirement for >=90GB is explicit
+- DISK_SIZE setting behavior on prebuilt is unambiguous

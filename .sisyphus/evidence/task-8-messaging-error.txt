@@ -1,0 +1,19 @@
+=== TASK 8: MESSAGING ALIGNMENT - ERROR PATH ===
+
+SEARCH FOR AMBIGUOUS WORDING (generic phrases without thresholds):
+🔍 0 for 'more space\|larger disk'
+No matches found
+
+AMBIGUOUS WORDING AUDIT:
+✓ No ambiguous wording detected — all disk references include concrete thresholds
+✓ All messaging specifies exact constraints:
+  - Prebuilt: ~44GB usable (explicit)
+  - IPSW: >=90GB usable (explicit)
+  - DISK_SIZE behavior on prebuilt: clearly stated as ineffective
+  - Recovery partition impact: explicitly mentioned in both branches
+
+MESSAGING CLARITY VERIFIED:
+- No vague references to "more space" or "larger disk"
+- All disk capacity statements include numeric thresholds
+- Recovery partition constraint is explicitly named
+- IPSW requirement for >=90GB is unambiguous

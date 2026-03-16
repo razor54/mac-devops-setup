@@ -1,0 +1,91 @@
+TAP-PACKAGE COHERENCE REPORT
+Generated: 2026-03-16
+Source: /tmp/mac-devops-setup-tart-fix/default.config.yml
+Task: 2 — Tap-package coherence guardrail definition (ANALYSIS ONLY)
+
+═══════════════════════════════════════════════════════════════════════════════
+GUARDRAIL RULE STATEMENT
+═══════════════════════════════════════════════════════════════════════════════
+
+  "Fully qualified package entries (owner/tap/formula) MUST have a corresponding
+   tap registered in homebrew_taps. Plain formula names are preferred when the
+   formula is available in homebrew-core — no tap entry required."
+
+═══════════════════════════════════════════════════════════════════════════════
+HOMEBREW_TAPS (lines 195–205)
+═══════════════════════════════════════════════════════════════════════════════
+
+  line 196: hashicorp/tap
+  line 197: weaveworks/tap
+  line 198: oven-sh/bun
+  line 199: homebrew-zathura/zathura
+  line 200: mrkai77/cask
+  line 201: jesseduffield/lazydocker
+  line 202: keidarcy/tap
+  line 203: anomalyco/tap
+  line 204: loft-sh/tap
+  line 205: ldayton/dippy
+
+═══════════════════════════════════════════════════════════════════════════════
+FULLY QUALIFIED FORMULAS — COHERENCE STATUS
+═══════════════════════════════════════════════════════════════════════════════
+
+  Line   Formula                                    Tap Prefix               Status
+  ─────────────────────────────────────────────────────────────────────────────────
+  128    mrkai77/cask/loop                          mrkai77/cask             PRESENT ✓
+  137    keidarcy/tap/e1s                           keidarcy/tap             PRESENT ✓
+  141    jesseduffield/lazydocker/lazydocker        jesseduffield/lazydocker PRESENT ✓
+  171    anomalyco/tap/opencode                     anomalyco/tap            PRESENT ✓
+  173    oven-sh/bun/bun                            oven-sh/bun              PRESENT ✓
+  178    jandedobbeleer/oh-my-posh/oh-my-posh       jandedobbeleer/oh-my-posh MISSING ✗
+  179    bufbuild/buf/buf                           bufbuild/buf             MISSING ✗
+  185    loft-sh/tap/vind                           loft-sh/tap              PRESENT ✓
+
+  Total fully-qualified formulas: 8
+  Tap PRESENT: 6
+  Tap MISSING: 2
+
+═══════════════════════════════════════════════════════════════════════════════
+NOTES ON MISMATCHES (pre-planned-edit state)
+═══════════════════════════════════════════════════════════════════════════════
+
+  line 178: jandedobbeleer/oh-my-posh/oh-my-posh
+    → Tap 'jandedobbeleer/oh-my-posh' is NOT in homebrew_taps
+    → oh-my-posh is available in homebrew-core; planned fix: use plain name 'oh-my-posh'
+    → After planned edit: entry removed, no tap needed
+
+  line 179: bufbuild/buf/buf
+    → Tap 'bufbuild/buf' is NOT in homebrew_taps
+    → buf is available in homebrew-core; planned fix: use plain name 'buf'
+    → After planned edit: entry removed, no tap needed
+
+  line 185: loft-sh/tap/vind
+    → Tap 'loft-sh/tap' IS present in homebrew_taps (line 204) — tap coherent
+    → BUT 'vind' was NEVER a valid formula in loft-sh/tap
+    → vcluster already exists at line 192 as plain formula
+    → Planned fix: DELETE this line entirely (invalid formula, duplicate intent)
+    → After planned edit: entry removed
+
+  line 173: oven-sh/bun/bun
+    → Tap 'oven-sh/bun' IS present in homebrew_taps (line 198) — tap coherent
+    → BUT 'bun' already exists as plain formula at line 145 — DUPLICATE
+    → This duplicate is noted but NOT in scope for this task
+
+═══════════════════════════════════════════════════════════════════════════════
+SCOPE LOCK STATEMENT
+═══════════════════════════════════════════════════════════════════════════════
+
+  This task is ANALYSIS ONLY. No source files were modified.
+  Scope is limited to:
+    - Identifying tap-package coherence violations
+    - Documenting the guardrail rule
+    - Producing evidence for planned edits in subsequent tasks
+
+  OUT OF SCOPE:
+    - Role retry/error redesign
+    - Broad package catalog refactors
+    - Any edits to default.config.yml or Ansible roles
+
+═══════════════════════════════════════════════════════════════════════════════
+END OF REPORT
+═══════════════════════════════════════════════════════════════════════════════
