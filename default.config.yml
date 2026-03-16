@@ -279,3 +279,4 @@ homebrew_cask_apps:
   - dotnet-sdk
   # - linearmouse
   - claude-code
+  - gcloud-cli
