@@ -189,6 +189,13 @@ homebrew_installed_packages:
   - codex
   # Claude optimization with rtk
   - rtk
+  # OpenCode with Claude Max (opencode-with-claude plugin)
+  # Plugin: npm install -g opencode-with-claude
+  # Manages claude-max-proxy lifecycle (starts/stops with OpenCode)
+  # Config: opencode.json sets anthropic.options.baseURL + apiKey for passthrough
+  # Multiple instances supported via dynamic port assignment (default: 3456)
+  # Auth: `claude login` (one-time OAuth via Claude Max subscription)
+  # Source: https://github.com/ianjwhite99/opencode-with-claude
   - vcluster
   - dippy
 

@@ -33,3 +33,12 @@
       ignore_errors: yes
       tags:
         - claude-plugins
+
+    - name: Install opencode-with-claude plugin
+      ansible.builtin.shell: npm install -g opencode-with-claude
+      args:
+        executable: /bin/zsh
+      when: configure_terminal
+      ignore_errors: yes
+      tags:
+        - claude-proxy
