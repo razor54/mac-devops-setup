@@ -74,17 +74,40 @@ wait_for_ssh() {
 }
 
 expand_disk() {
+	local avail_gb
+	local is_ipsw=false
 	log_info "Checking disk space..."
-	# The Cirrus Labs images have a recovery partition that blocks expansion
-	# without booting into Recovery OS. We compensate by using a larger initial disk size.
 
 	ssh_cmd "diskutil list disk0"
 	ssh_cmd "df -h /"
 
+	if [[ -n "${DISK_CHECK_OVERRIDE_AVAIL_GB:-}" ]]; then
+		avail_gb="${DISK_CHECK_OVERRIDE_AVAIL_GB}"
+		log_warn "DISK_CHECK_OVERRIDE_AVAIL_GB set to ${avail_gb}GB (test mode)"
+	else
+		avail_gb=$(ssh_cmd "df -g / 2>/dev/null | awk 'NR==2{print \$4}'" 2>/dev/null || echo "0")
+	fi
+
+	if [[ "${USE_IPSW:-}" == "true" || (-z "${USE_IPSW:-}" && "${avail_gb}" -ge 60) ]]; then
+		is_ipsw=true
+	fi
+
+	if [[ "${is_ipsw}" == "true" ]]; then
+		if [[ "${avail_gb}" -ge 90 ]]; then
+			log_info "[disk] Classification: ipsw-expected (~${avail_gb}GB available - full disk as expected)"
+		else
+			log_error "[disk] Classification: unexpected-low-space (${avail_gb}GB available on IPSW VM - expected >=90GB)"
+			log_error "[disk] Remediation: Ensure Setup Assistant completed correctly and DISK_SIZE=100 was used"
+			log_error "[disk] See README.md 'Disk Space' section for IPSW validation runbook"
+		fi
+	else
+		log_info "[disk] Classification: prebuilt-expected (~${avail_gb}GB available - recovery partition limits usable space)"
+		log_info "[disk] Note: Use USE_IPSW=true DISK_SIZE=100 ./scripts/tart-setup.sh for >=90GB usable space"
+	fi
+
 	# Note: Automated disk expansion is blocked by recovery partition on Cirrus Labs images.
 	# The workaround is using DISK_SIZE=150+ when creating the VM.
 	# Manual expansion requires: tart run <vm> --recovery, then diskutil commands
-	log_info "Note: ~44GB usable from APFS container (recovery partition blocks auto-expansion)"
 }
 
 ssh_cmd() {

@@ -9,6 +9,10 @@ for arg in "$@"; do
 done
 
 if [[ "$CI_MODE" == true ]]; then
+	set -euo pipefail
+fi
+
+if [[ "$CI_MODE" == true ]]; then
 	LOG_FILE="$HOME/mac-devops-setup/install.log"
 	exec > >(tee -a "$LOG_FILE") 2>&1
 	echo "=== Install started at $(date) ==="
@@ -38,6 +42,22 @@ fi
 echo "# Step 2 : Installing Homebrew"
 if ! command -v brew &>/dev/null; then
 	if [[ "$CI_MODE" == true ]]; then
+		if [[ -z "${ANSIBLE_BECOME_PASSWORD:-}" ]]; then
+			echo "CI mode requires ANSIBLE_BECOME_PASSWORD for Homebrew installation"
+			exit 1
+		fi
+
+		CI_SUDOERS_FILE="/etc/sudoers.d/99-mac-devops-setup-ci"
+		echo "$ANSIBLE_BECOME_PASSWORD" | sudo -S -k -p '' -v
+		echo "$ANSIBLE_BECOME_PASSWORD" | sudo -S -p '' /bin/sh -c "printf '%s ALL=(ALL) NOPASSWD:ALL\n' '$USER' > '${CI_SUDOERS_FILE}' && chmod 440 '${CI_SUDOERS_FILE}'"
+		while true; do
+			sudo -n true
+			sleep 20
+			kill -0 "$$" || exit
+		done 2>/dev/null &
+		SUDO_KEEPALIVE_PID=$!
+		trap '[[ -n "${SUDO_KEEPALIVE_PID:-}" ]] && kill "${SUDO_KEEPALIVE_PID}" 2>/dev/null || true; sudo rm -f "${CI_SUDOERS_FILE:-}" 2>/dev/null || true' EXIT
+
 		NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	else
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -170,7 +190,7 @@ defaults write .GlobalPreferences com.apple.mouse.scaling -1
 
 if [[ ! -d ~/.sdkman ]]; then
 	if [[ "$CI_MODE" == true ]]; then
-		curl -s "https://get.sdkman.io?rcupdate=false" | bash
+		echo "# Skipping SDKMAN in CI mode (requires Bash 4+)"
 	else
 		curl -s "https://get.sdkman.io" | bash
 	fi

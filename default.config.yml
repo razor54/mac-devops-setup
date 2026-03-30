@@ -77,7 +77,6 @@ homebrew_installed_packages:
   - tree # Display directories as trees
   #- csshx # Cluster ssh tool for Terminal.app
   - fzf # Command-line fuzzy finder written in Go
-  - whatmask # Network settings helper
   - wget # Internet file retriever
   - nmap # Port scanning utility
   - ssh-copy-id # Add a public key to a remote machine's authorized_keys file
@@ -175,8 +174,8 @@ homebrew_installed_packages:
   - chezmoi
   - golangci-lint
   - openscad
-   - oh-my-posh
-   - buf
+  - oh-my-posh
+  - buf
   # *** Anvil IDP ***
   - sqlc # Type-safe SQL codegen
   - golang-migrate # DB migration CLI
