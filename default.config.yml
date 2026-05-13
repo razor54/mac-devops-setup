@@ -197,6 +197,8 @@ homebrew_installed_packages:
   # Source: https://github.com/ianjwhite99/opencode-with-claude
   - vcluster
   - dippy
+  - azure-cli
+  - mole
 
 homebrew_taps:
   - hashicorp/tap
