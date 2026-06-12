@@ -199,6 +199,8 @@ homebrew_installed_packages:
   - dippy
   - azure-cli
   - mole
+  - atuin
+  - zoxide
 
 homebrew_taps:
   - hashicorp/tap
@@ -288,3 +290,4 @@ homebrew_cask_apps:
   # - linearmouse
   - claude-code
   - gcloud-cli
+  - font-anka-coder
