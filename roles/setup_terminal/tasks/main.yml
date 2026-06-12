@@ -75,3 +75,33 @@
     dest: "~/.oh-my-zsh"
     update: yes
   when: install_oh_my_zsh
+
+##========================================================================================
+##                                                                                      ##
+##                                       oh-my-pi                                       ##
+##                                                                                      ##
+##========================================================================================
+
+- name: Ensure bun is up to date
+  ansible.builtin.command: bun upgrade
+  register: bun_upgrade
+  changed_when: "'already up to date' not in bun_upgrade.stdout"
+  when: configure_terminal
+
+- name: Install oh-my-pi (pinned version via bun)
+  ansible.builtin.command:
+    cmd: bun install -g @oh-my-pi/pi-coding-agent@{{ oh_my_pi_version }}
+    creates: "{{ ansible_env.HOME }}/.bun/bin/omp"
+  when: configure_terminal
+
+- name: Install OpenSpec (pinned version via bun)
+  ansible.builtin.command:
+    cmd: bun install -g @fission-ai/openspec@{{ openspec_version }}
+    creates: "{{ ansible_env.HOME }}/.bun/bin/openspec"
+  when: configure_terminal
+
+- name: Install GSD (pinned version via npm)
+  ansible.builtin.command:
+    cmd: npm install -g @opengsd/gsd-pi@{{ gsd_pi_version }}
+    creates: /opt/homebrew/bin/gsd
+  when: configure_terminal

@@ -28,6 +28,7 @@ dotfiles_files:
   - .config/starship.toml
   - .config/ghostty
   - .config/eza
+  - .gsd
 
 dotfiles_special_links:
   - src: .config/bat/config
@@ -200,7 +201,8 @@ homebrew_installed_packages:
   - azure-cli
   - mole
   - atuin
-  - zoxide
+  - glow
+  - rust
 
 homebrew_taps:
   - hashicorp/tap
